@@ -79,41 +79,10 @@ export default function SatoshiParaBox() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Vault files state
-  const [files, setFiles] = useState<VaultFile[]>([
-    {
-      id: '1',
-      name: 'medical_history_report.pdf',
-      size: 1024 * 1024 * 1.8, // 1.8 MB
-      type: 'application/pdf',
-      uploadedAt: '2026-06-13T01:14:22.000Z',
-      blobId: 'walrus_blob_88f910a92b3c4d5e6f1a',
-      status: 'stored',
-      encryptionKey: '3f7a9c8b...e10d2c',
-      hederaTxId: '0.0.4589201@1718231662.000000003'
-    }
-  ]);
+  const [files, setFiles] = useState<VaultFile[]>([]);
 
   // HCS logs state
-  const [hcsLogs, setHcsLogs] = useState<HcsLog[]>([
-    {
-      timestamp: '2026-06-13T01:10:05.000Z',
-      sequenceNumber: 1,
-      topicId: '0.0.4589201',
-      transactionId: '0.0.4589201@1718231405.000000001',
-      type: 'IDENTITY_REGISTERED',
-      subdomain: 'satoshis.parabox.eth',
-      payload: 'Identity verification completed. Registered subdomain satoshis.parabox.eth linked to World ID.'
-    },
-    {
-      timestamp: '2026-06-13T01:14:22.000Z',
-      sequenceNumber: 2,
-      topicId: '0.0.4589201',
-      transactionId: '0.0.4589201@1718231662.000000003',
-      type: 'BLOB_UPLOADED',
-      subdomain: 'satoshis.parabox.eth',
-      payload: 'Encrypted payload (AES-256) uploaded. Walrus Blob ID: walrus_blob_88f910a92b3c4d5e6f1a'
-    }
-  ]);
+  const [hcsLogs, setHcsLogs] = useState<HcsLog[]>([]);
 
   // Console Logs
   const [consoleLogs, setConsoleLogs] = useState<string[]>([
@@ -184,6 +153,70 @@ export default function SatoshiParaBox() {
     };
   }, [isVerified]);
 
+  // Load HCS messages dynamically from the Hedera Mirror Node on page load
+  useEffect(() => {
+    const fetchHcsMessages = async () => {
+      try {
+        logToConsole(`Mirror Node: Syncing live audit feed from Hedera testnet for Topic ${config.hederaTopicId}...`);
+        const response = await fetch(
+          `https://testnet.mirrornode.hedera.com/api/v1/topics/${config.hederaTopicId}/messages?order=desc&limit=15`
+        );
+        if (!response.ok) {
+          throw new Error('Mirror Node returned an error response.');
+        }
+        const data = await response.json();
+        
+        if (data.messages && data.messages.length > 0) {
+          const parsedLogs: HcsLog[] = data.messages.map((msg: any) => {
+            let decodedPayload = '';
+            try {
+              decodedPayload = atob(msg.message);
+            } catch {
+              decodedPayload = msg.message;
+            }
+
+            let type: HcsLog['type'] = 'BLOB_UPLOADED';
+            let subdomain = 'satoshis.parabox.eth';
+            let payloadText = decodedPayload;
+
+            try {
+              const parsedJSON = JSON.parse(decodedPayload);
+              type = parsedJSON.type || 'BLOB_UPLOADED';
+              subdomain = parsedJSON.subdomain || 'satoshis.parabox.eth';
+              payloadText = parsedJSON.payload || decodedPayload;
+            } catch {
+              if (decodedPayload.includes('IDENTITY_REGISTERED')) type = 'IDENTITY_REGISTERED';
+              else if (decodedPayload.includes('SESSION_LOCKED')) type = 'SESSION_LOCKED';
+              else if (decodedPayload.includes('BLOB_PURGED')) type = 'BLOB_PURGED';
+              else if (decodedPayload.includes('FIXER_SCHEDULED')) type = 'FIXER_SCHEDULED';
+            }
+
+            return {
+              timestamp: new Date(Number(msg.consensus_timestamp) * 1000).toISOString(),
+              sequenceNumber: msg.sequence_number,
+              topicId: config.hederaTopicId,
+              transactionId: msg.consensus_timestamp,
+              type,
+              subdomain,
+              payload: payloadText
+            };
+          });
+          
+          setHcsLogs(parsedLogs);
+          logToConsole(`Mirror Node: Loaded ${parsedLogs.length} live on-chain logs.`);
+        } else {
+          setHcsLogs([]);
+          logToConsole('Mirror Node: Topic is empty. Ready for new live transactions.');
+        }
+      } catch (err: any) {
+        logToConsole(`Mirror Node Sync Error: ${err.message}.`);
+        setHcsLogs([]);
+      }
+    };
+
+    fetchHcsMessages();
+  }, [config.hederaTopicId]);
+
   const handleLockout = () => {
     if (timerRef.current) clearInterval(timerRef.current);
     setIsVerified(false);
@@ -202,11 +235,18 @@ export default function SatoshiParaBox() {
   const getHashscanLink = (txId: string) => {
     if (!txId) return '#';
     if (txId.includes('fallback')) return '#';
-    // Format: operator@seconds.nanos
-    const parts = txId.split('@');
-    if (parts.length > 1) {
-      return `https://hashscan.io/testnet/transaction/${parts[1]}/message`;
+    
+    // If it's in the format operator@seconds.nanos (Transaction ID)
+    if (txId.includes('@')) {
+      const parts = txId.split('@');
+      if (parts.length > 1) {
+        const timeParts = parts[1].split('.');
+        const formattedId = `${parts[0]}-${timeParts[0]}-${timeParts[1] || '0'}`;
+        return `https://hashscan.io/testnet/transaction/${formattedId}/message`;
+      }
     }
+    
+    // Otherwise, assume it is a consensus timestamp (seconds.nanos)
     return `https://hashscan.io/testnet/transaction/${txId}/message`;
   };
 
@@ -215,7 +255,7 @@ export default function SatoshiParaBox() {
     type: HcsLog['type'], 
     subdomain: string, 
     payload: string
-  ) => {
+  ): Promise<string> => {
     try {
       logToConsole(`Hedera Network: Submitting Consensus Message for ${type}...`);
       
@@ -243,6 +283,7 @@ export default function SatoshiParaBox() {
       
       setHcsLogs((prev) => [newLog, ...prev]);
       logToConsole(`Hedera Network: Consensus confirmed. Tx ID: ${data.transactionId} (Simulated: ${data.isSimulated ? 'Yes' : 'No'})`);
+      return data.transactionId;
     } catch (err: any) {
       logToConsole(`Hedera Network Error: ${err.message}`);
       const fallbackLog: HcsLog = {
@@ -255,6 +296,7 @@ export default function SatoshiParaBox() {
         payload: `(LOCAL FALLBACK) ${payload}`
       };
       setHcsLogs((prev) => [fallbackLog, ...prev]);
+      return fallbackLog.transactionId;
     }
   };
 
@@ -330,6 +372,9 @@ export default function SatoshiParaBox() {
 
       const blobId = blobInfo.blobObject.blobId;
 
+      // Submit HCS audit log and get transaction ID
+      const txId = await addHcsLog('BLOB_UPLOADED', userSubdomain, `File ${selectedFile.name} encrypted and stored in Walrus. Blob: ${blobId}`);
+
       const newFile: VaultFile = {
         id: (files.length + 1).toString(),
         name: selectedFile.name,
@@ -339,26 +384,25 @@ export default function SatoshiParaBox() {
         blobId: blobId,
         status: 'stored',
         encryptionKey: `${keyHex.substring(0, 16)}...`,
-        hederaTxId: `0.0.4589201@${Math.floor(Date.now() / 1000)}.000000009`
+        hederaTxId: txId
       };
 
       setFiles((prev) => [newFile, ...prev]);
       setIsUploading(false);
       setSelectedFile(null);
       logToConsole(`Walrus Protocol: Success! Blob stored on decentralized nodes. Blob ID: ${blobId}`);
-      
-      // Submit HCS audit log
-      addHcsLog('BLOB_UPLOADED', userSubdomain, `File ${newFile.name} encrypted and stored in Walrus. Blob: ${blobId}`);
 
     } catch (error: any) {
       logToConsole(`Walrus Upload Error: ${error.message}`);
       
       // Graceful fallback to simulated upload if publisher node is offline/unreachable
       logToConsole('Fallback: Publisher node offline or unreachable. Simulating upload...');
-      setTimeout(() => {
+      setTimeout(async () => {
         const mockBlobId = `walrus_blob_${Array.from({ length: 20 }, () => Math.floor(Math.random() * 16).toString(16)).join('')}`;
         const mockKey = Array.from({ length: 16 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
         
+        const txId = await addHcsLog('BLOB_UPLOADED', userSubdomain, `(SIMULATED) File ${selectedFile.name} encrypted and stored. Blob: ${mockBlobId}`);
+
         const fallbackFile: VaultFile = {
           id: (files.length + 1).toString(),
           name: selectedFile.name,
@@ -368,14 +412,13 @@ export default function SatoshiParaBox() {
           blobId: mockBlobId,
           status: 'stored',
           encryptionKey: `${mockKey}...`,
-          hederaTxId: `0.0.4589201@fallback_${Math.floor(Date.now() / 1000)}`
+          hederaTxId: txId
         };
 
         setFiles((prev) => [fallbackFile, ...prev]);
         setIsUploading(false);
         setSelectedFile(null);
         logToConsole(`Walrus Protocol Fallback: Simulated storage complete. Blob ID: ${mockBlobId}`);
-        addHcsLog('BLOB_UPLOADED', userSubdomain, `(SIMULATED) File ${fallbackFile.name} encrypted and stored. Blob: ${mockBlobId}`);
       }, 1500);
     }
   };
