@@ -1,0 +1,1974 @@
+npx create-next-app@latest satoshis-parabox --typescript --eslint --tailwind --src-dir --app --import-alias "@/*"
+
++ Thought: 417ms
+
+# Create a new Next.js app with specified flags
+
+$ npx create-next-app@latest satoshis-parabox --typescript --eslint --tailwind --src-dir --app --import-alias "@/*"
+
+zsh:1: command not found: npx
+
++ Thought: 341ms
+
+# Check if Node.js/npm are installed
+
+$ which node npm npx 2>&1; node --version 2>&1; npm --version 2>&1
+
+node not found
+
+npm not found
+
+npx not found
+
+zsh:1: command not found: node
+
+zsh:1: command not found: npm
+
++ Thought: 472ms
+
+Node.js/npm is not installed on this system. You'll need to install it first.
+
+On macOS, I'd recommend using a version manager like nvm or fnm, or installing directly via Homebrew:
+
+brew install node
+
+Or install nvm and use it:
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+
+nvm install 22
+
+Once Node.js is installed, the original command will work. Want me to try installing it now?
+
+▣  Build · Big Pickle · 6.6s
+
+yes
+
++ Thought: 475ms
+
+# Check if Homebrew is installed
+
+$ which brew 2>&1 && brew --version
+
+brew not found
+
++ Thought: 333ms
+
+# Install nvm
+
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+
+% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+
+100 16774  100 16774    0     0   208k      0 --:--:-- --:--:-- --:--:--  210k
+
+You may be on a Mac, and need to install the Xcode Command Line Developer Tools.
+
+If so, run `xcode-select --install` and try again. If not, please report this!
+
++ Thought: 328ms
+
+# Install Xcode Command Line Tools
+
+$ xcode-select --install 2>&1
+
+xcode-select: note: install requested for command line developer tools
+
++ Thought: 615ms
+
+Xcode Command Line Tools installation has been requested. This may open a dialog on your end. Let me check if it completed:
+
+# Check if Xcode CLT installed
+
+$ xcode-select -p 2>&1
+
+xcode-select: error: Unable to get active developer directory. Use `sudo xcode-select --switch path/to/Xcode.app` to set one (or see `man xcode-select`)
+
++ Thought: 644ms
+
+# Retry nvm install after Xcode CLT
+
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash 2>&1
+
+% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+
+100 16774  100 16774    0     0   519k      0 --:--:-- --:--:-- --:--:--  528k
+
+You may be on a Mac, and need to install the Xcode Command Line Developer Tools.
+
+If so, run `xcode-select --install` and try again. If not, please report this!
+
++ Thought: 1.6s
+
+The Xcode Command Line Tools installer may have opened a dialog on your screen. Please complete the installation there first, then let me know when it's done so I can proceed with setting up Node.js.
+
+▣  Build · Big Pickle · 13.2s
+
+cd satoshis-parabox
+
+npm run dev
+
++ Thought: 900ms
+
+# Check if directory exists
+
+$ ls -la satoshis-parabox 2>&1
+
+ls: satoshis-parabox: No such file or directory
+
+# Check if Node/npm available now
+
+$ which node npm 2>&1; node --version 2>&1; npm --version 2>&1
+
+node not found
+
+npm not found
+
+zsh:1: command not found: node
+
+zsh:1: command not found: npm
+
++ Thought: 556ms
+
+Node.js still isn't installed and the project directory doesn't exist. Did you complete the Xcode Command Line Tools installation dialog that appeared? If not, please run this in your terminal to install it:
+
+xcode-select --install
+
+Click "Install" in the dialog, then let me know once it finishes so I can proceed.
+
+▣  Build · Big Pickle · 4.9s
+
+Install
+
++ Thought: 1.6s
+
+# Install Xcode Command Line Tools
+
+$ xcode-select --install 2>&1
+
+xcode-select: note: install requested for command line developer tools
+
++ Thought: 1.8s
+
+# Check if CLT is installed via pkgutil
+
+$ pkgutil --pkg-info=com.apple.pkg.CLTools_Executables 2>&1
+
+No receipt for 'com.apple.pkg.CLTools_Executables' found at '/'.
+
+# List available software updates
+
+$ softwareupdate --list 2>&1
+
+Software Update Tool
+
+
+
+Finding available software
+
+Software Update found the following new or updated software:
+
+* Label: Command Line Tools for Xcode 26.5-26.5
+
+	Title: Command Line Tools for Xcode 26.5, Version: 26.5, Size: 920416KiB, Recommended: YES,
+
++ Thought: 424ms
+
+# Install Xcode CLT via softwareupdate
+
+$ sudo softwareupdate --install "Command Line Tools for Xcode 26.5-26.5" 2>&1
+
+sudo: a terminal is required to read the password; either use the -S option to read from standard input or configure an askpass helper
+
+sudo: a password is required
+
++ Thought: 1.6s
+
+# Install Xcode CLT without sudo
+
+$ softwareupdate --install "Command Line Tools for Xcode 26.5-26.5" 2>&1
+
+Software Update Tool
+
+
+
+Finding available software
+
+
+
+Downloading Command Line Tools for Xcode 26.5
+
+Downloaded Command Line Tools for Xcode 26.5
+
+Installing Command Line Tools for Xcode 26.5
+
+Done with Command Line Tools for Xcode 26.5
+
+Done.
+
++ Thought: 357ms
+
+Now let me verify and install nvm + Node.js:
+
+# Verify Xcode CLT installed
+
+$ xcode-select -p 2>&1 && pkgutil --pkg-info=com.apple.pkg.CLTools_Executables 2>&1
+
+/Library/Developer/CommandLineTools
+
+package-id: com.apple.pkg.CLTools_Executables
+
+version: 26.5.0.0.1777544298
+
+volume: /
+
+location: /
+
+install-time: 1781323154
+
++ Thought: 397ms
+
+# Install nvm
+
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash 2>&1
+
+% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+
+100 16774  100 16774    0     0   235k      0 --:--:-- --:--:-- --:--:--  237k
+
+=> Downloading nvm from git to '/Users/nancyamaro/.nvm'
+
+
+
+=> Cloning into '/Users/nancyamaro/.nvm'...
+
+* (HEAD detached at FETCH_HEAD)
+
+  master
+
+=> Compressing and cleaning up git repository
+
+
+
+=> Profile not found. Tried ~/.bashrc, ~/.bash_profile, ~/.zprofile, ~/.zshrc, and ~/.profile.
+
+…
+
+Click to expand
+
++ Thought: 356ms
+
+# Install Node.js 22 via nvm
+
+$ export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && nvm install 22 && nvm use 22
+
+Downloading and installing node v22.22.3...
+
+Downloading https://nodejs.org/dist/v22.22.3/node-v22.22.3-darwin-arm64.tar.xz...
+
+
+
+                                                                           0.6%
+
+#                                                                          1.5%
+
+#                                                                          2.4%
+
+##                                                                         3.3%
+
+###                                                                        4.3%
+
+###                                                                        5.2%
+
+####                                                                       6.1%
+
+#####                                                                      7.0%
+
+#####                                                                      8.0%
+
+######                                                                     8.9%
+
+#######                                                                    9.8%
+
+#######                                                                   10.7%
+
+########    …
+
+Click to expand
+
++ Thought: 252ms
+
+Node.js is installed. Now let me create the app:
+
+# Create Next.js app with specified options
+
+$ npx create-next-app@latest satoshis-parabox --typescript --eslint --tailwind --src-dir --app --import-alias "@/*" 2>&1
+
+zsh:1: command not found: npx
+
++ Thought: 738ms
+
+# Create Next.js app (with nvm sourced)
+
+$ export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && npx create-next-app@latest satoshis-parabox --typescript --eslint --tailwind --src-dir --app --import-alias "@/*" 2>&1
+
+npm warn exec The following package was not found and will be installed: create-next-app@16.2.9
+
+
+
+Using defaults for unprovided options:
+
+
+
+  --ts                    TypeScript (use --js for JavaScript)
+
+  --no-react-compiler     No React Compiler (use --react-compiler for React Compiler)
+
+  --agents-md             AGENTS.md (use --no-agents-md for No AGENTS.md)
+
+
+
+Creating a new Next.js app in /Users/nancyamaro/satoshis-parabox.
+
+
+
+…
+
+Click to expand
+
++ Thought: 350ms
+
+App created! Now running the dev server:
+
+# Start Next.js dev server in satoshis-parabox
+
+$ export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && npm run dev
+
+> satoshis-parabox@0.1.0 dev
+
+> next dev
+
+
+
+▲ Next.js 16.2.9 (Turbopack)
+
+- Local:         http://localhost:3000
+
+- Network:       http://172.16.1.238:3000
+
+✓ Ready in 235ms
+
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+
+This information is used to shape Next.js' roadmap and prioritize features.
+
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+
+https://nextjs.org/telemetry
+
+
+
+
+
+ GET / 200 in 1868ms (next.js: 1791ms, application-code: 77ms)
+
+[browser] Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+
+ GET / 200 in 63ms (next.js: 26ms, application-code: 37ms)
+
+[browser] Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+
+ GET / 200 in 50ms (next.js: 4ms, application-code: 46ms)
+
+[browser] Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+
+
+
+Click to collapse
+
++ Thought: 480ms
+
+Dev server is running at http://localhost:3000 🎉
+
+▣  Build · Big Pickle · 15m 34s
+
+run the server
+
++ Thought: 1.2s
+
+# Start Next.js dev server in satoshis-parabox
+
+$ export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && npm run dev
+
+> satoshis-parabox@0.1.0 dev
+
+> next dev
+
+
+
+▲ Next.js 16.2.9 (Turbopack)
+
+- Local:         http://localhost:3000
+
+- Network:       http://172.16.1.238:3000
+
+✓ Ready in 259ms
+
+
+
+
+
+Running at http://localhost:3000 (turbopack, Next.js 16.2.9).
+
+▣  Build · Big Pickle · 1m 30s
+
+the server is not loading
+
++ Thought: 996ms
+
+# Check if Next.js process is running
+
+$ ps aux | grep -i "next\|node" | grep -v grep 2>&1
+
+nancyamaro        1219   0.0  0.1 435335888   9120   ??  Ss    5:05PM   0:00.07 /System/Applications/Messages.app/Contents/Extensions/MessagesActionExtension.appex/Contents/MacOS/MessagesActionExtension -LaunchArguments eyJzZXJ2aWNlTmFtZSI6ImNvbS5hcHBsZS5Nb2JpbGVTTVMuTWVzc2FnZXNBY3Rpb25FeHRlbnNpb24iLCJ0eXBlIjoxLCJlbmhhbmNlZFNlY3VyaXR5IjpmYWxzZX0=
+
++ Thought: 320ms
+
+The process died. Starting fresh:
+
+Start Next.js dev server in satoshis-parabox
+
+$ export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && npm run dev
+
+> satoshis-parabox@0.1.0 dev
+
+> next dev
+
+
+
+▲ Next.js 16.2.9 (Turbopack)
+
+- Local:         http://localhost:3000
+
+- Network:       http://172.16.1.238:3000
+
+✓ Ready in 214ms
+
+
+
+ GET / 200 in 186ms (next.js: 117ms, application-code: 70ms)
+
+⚠ Blocked cross-origin request to Next.js dev resource /_next/webpack-hmr from "172.16.1.238".
+
+Cross-origin access to Next.js dev resources is blocked by default for safety.
+
+
+
+To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
+
+
+
+// next.config.js
+
+module.exports = {
+
+  allowedDevOrigins: ['172.16.1.238'],
+
+}
+
+
+
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+
+ GET / 200 in 59ms (next.js: 15ms, application-code: 44ms)
+
+[browser] Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+
+ GET /apple-touch-icon-precomposed.png 404 in 466ms (next.js: 435ms, application-code: 31ms)
+
+ GET /apple-touch-icon.png 404 in 462ms (next.js: 439ms, application-code: 22ms)
+
+ GET / 200 in 48ms (next.js: 7ms, application-code: 40ms)
+
+[browser] Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Last login: Sat Jun 13 01:06:15 on ttys001
+
+nancyamaro@Nancys-MacBook-Neo ~ % export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && npm run dev
+
+npm error code ENOENT
+
+npm error syscall open
+
+npm error path /Users/nancyamaro/package.json
+
+npm error errno -2
+
+npm error enoent Could not read package.json: Error: ENOENT: no such file or directory, open '/Users/nancyamaro/package.json'
+
+npm error enoent This is related to npm not being able to find a file.
+
+npm error enoent
+
+npm error A complete log of this run can be found in: /Users/nancyamaro/.npm/_logs/2026-06-13T05_08_04_127Z-debug-0.log
+
+nancyamaro@Nancys-MacBook-Neo ~ % cd satoshis-parabox 
+
+nancyamaro@Nancys-MacBook-Neo satoshis-parabox % export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" && npm run dev
+
+
+
+> satoshis-parabox@0.1.0 dev
+
+> next dev
+
+
+
+⚠ Port 3000 is in use by process 16059, using available port 3001 instead.
+
+▲ Next.js 16.2.9 (Turbopack)
+
+- Local:         http://localhost:3001
+
+- Network:       http://172.16.1.238:3001
+
+✓ Ready in 265ms
+
+⨯ Another next dev server is already running.
+
+
+
+- Local:        http://localhost:3000
+
+- PID:          16059
+
+- Dir:          /Users/nancyamaro/satoshis-parabox
+
+- Log:          .next/dev/logs/next-development.log
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Last login: Sat Jun 13 01:07:59 on ttys001
+
+nancyamaro@Nancys-MacBook-Neo ~ % node -v
+
+npm -v
+
+v24.16.0
+
+11.13.0
+
+nancyamaro@Nancys-MacBook-Neo ~ % cd satoshis-parabox
+
+npm install @worldcoin/idkit
+
+npm run dev
+
+
+
+added 30 packages, removed 5 packages, and audited 387 packages in 3s
+
+
+
+148 packages are looking for funding
+
+  run `npm fund` for details
+
+
+
+2 moderate severity vulnerabilities
+
+
+
+To address all issues (including breaking changes), run:
+
+  npm audit fix --force
+
+
+
+Run `npm audit` for details.
+
+
+
+> satoshis-parabox@0.1.0 dev
+
+> next dev
+
+
+
+▲ Next.js 16.2.9 (Turbopack)
+
+- Local:         http://localhost:3000
+
+- Network:       http://172.16.1.238:3000
+
+✓ Ready in 228ms
+
+
+
+ GET / 200 in 220ms (next.js: 126ms, application-code: 94ms)
+
+[browser] Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+
+ GET / 200 in 30ms (next.js: 3ms, application-code: 27ms)
+
+[browser] Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+
+ GET / 200 in 116ms (next.js: 3ms, application-code: 113ms)
+
+ GET / 200 in 33ms (next.js: 3ms, application-code: 30ms)
+
+[browser] Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
+
+^C
+
+nancyamaro@Nancys-MacBook-Neo satoshis-parabox % npm install @worldcoin/idkit
+
+
+
+up to date, audited 387 packages in 735ms
+
+
+
+148 packages are looking for funding
+
+  run `npm fund` for details
+
+
+
+2 moderate severity vulnerabilities
+
+
+
+To address all issues (including breaking changes), run:
+
+  npm audit fix --force
+
+
+
+Run `npm audit` for details.
+
+nancyamaro@Nancys-MacBook-Neo satoshis-parabox %  npm audit fix --force
+
+npm warn using --force Recommended protections disabled.
+
+npm warn audit Updating next to 9.3.3, which is a SemVer major change.
+
+npm warn ERESOLVE overriding peer dependency
+
+npm warn While resolving: next@9.3.3
+
+npm warn Found: react@19.2.4
+
+npm warn node_modules/react
+
+npm warn   peer react@">=18" from @worldcoin/idkit@4.1.8
+
+npm warn   node_modules/@worldcoin/idkit
+
+npm warn     @worldcoin/idkit@"^4.1.8" from the root project
+
+npm warn   2 more (react-dom, the root project)
+
+npm warn
+
+npm warn Could not resolve dependency:
+
+npm warn peer react@"^16.6.0" from next@9.3.3
+
+npm warn node_modules/next
+
+npm warn   next@"9.3.3" from the root project
+
+npm warn
+
+npm warn Conflicting peer dependency: react@16.14.0
+
+npm warn node_modules/react
+
+npm warn   peer react@"^16.6.0" from next@9.3.3
+
+npm warn   node_modules/next
+
+npm warn     next@"9.3.3" from the root project
+
+npm warn ERESOLVE overriding peer dependency
+
+npm warn While resolving: next@9.3.3
+
+npm warn Found: react-dom@19.2.4
+
+npm warn node_modules/react-dom
+
+npm warn   peer react-dom@">=18" from @worldcoin/idkit@4.1.8
+
+npm warn   node_modules/@worldcoin/idkit
+
+npm warn     @worldcoin/idkit@"^4.1.8" from the root project
+
+npm warn   1 more (the root project)
+
+npm warn
+
+npm warn Could not resolve dependency:
+
+npm warn peer react-dom@"^16.6.0" from next@9.3.3
+
+npm warn node_modules/next
+
+npm warn   next@"9.3.3" from the root project
+
+npm warn
+
+npm warn Conflicting peer dependency: react-dom@16.14.0
+
+npm warn node_modules/react-dom
+
+npm warn   peer react-dom@"^16.6.0" from next@9.3.3
+
+npm warn   node_modules/next
+
+npm warn     next@"9.3.3" from the root project
+
+npm warn ERESOLVE overriding peer dependency
+
+npm warn ERESOLVE overriding peer dependency
+
+npm warn deprecated fsevents@1.2.13: Upgrade to fsevents v2 to mitigate potential security issues
+
+npm warn deprecated uuid@3.4.0: uuid@10 and below is no longer supported.  For ESM codebases, update to uuid@latest.  For CommonJS codebases, use uuid@11 (but be aware this version will likely be deprecated in 2028).
+
+npm warn deprecated fs-write-stream-atomic@1.0.10: This package is no longer supported.
+
+npm warn deprecated copy-concurrently@1.0.5: This package is no longer supported.
+
+npm warn deprecated move-concurrently@1.0.1: This package is no longer supported.
+
+npm warn deprecated figgy-pudding@3.5.2: This module is no longer supported.
+
+npm warn deprecated resolve-url@0.2.1: https://github.com/lydell/resolve-url#deprecated
+
+npm warn deprecated source-map-url@0.4.1: See https://github.com/lydell/source-map-url#deprecated
+
+npm warn deprecated flatten@1.0.3: flatten is deprecated in favor of utility frameworks such as lodash.
+
+npm warn deprecated querystring@0.2.1: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
+
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+
+npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+
+npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+
+npm warn deprecated urix@0.1.0: Please see https://github.com/lydell/urix#deprecated
+
+npm warn deprecated source-map-resolve@0.5.3: See https://github.com/lydell/source-map-resolve#deprecated
+
+npm warn deprecated @babel/plugin-proposal-optional-catch-binding@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-catch-binding instead.
+
+npm warn deprecated @babel/plugin-proposal-async-generator-functions@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-async-generator-functions instead.
+
+npm warn deprecated @babel/plugin-proposal-json-strings@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-json-strings instead.
+
+npm warn deprecated @babel/plugin-proposal-dynamic-import@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-dynamic-import instead.
+
+npm warn deprecated @babel/plugin-proposal-unicode-property-regex@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-unicode-property-regex instead.
+
+npm warn deprecated querystring@0.2.0: The querystring API is considered Legacy. new code should use the URLSearchParams API instead.
+
+npm warn deprecated amphtml-validator@1.0.30: Version no longer supported. Upgrade to 1.0.35.
+
+npm warn deprecated @babel/plugin-proposal-object-rest-spread@7.6.2: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-object-rest-spread instead.
+
+npm warn deprecated @babel/plugin-proposal-nullish-coalescing-operator@7.7.4: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-nullish-coalescing-operator instead.
+
+npm warn deprecated @babel/plugin-proposal-optional-chaining@7.7.4: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-chaining instead.
+
+npm warn deprecated @babel/plugin-proposal-numeric-separator@7.8.3: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-numeric-separator instead.
+
+npm warn deprecated @babel/plugin-proposal-class-properties@7.7.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
+
+
+
+added 980 packages, removed 12 packages, changed 1 package, and audited 1355 packages in 43s
+
+
+
+171 packages are looking for funding
+
+  run `npm fund` for details
+
+
+
+# npm audit report
+
+
+
+@babel/runtime  <7.26.10
+
+Severity: moderate
+
+Babel has inefficient RegExp complexity in generated code with .replace when transpiling named capturing groups - https://github.com/advisories/GHSA-968p-4wvh-cqc8
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/@babel/runtime
+
+  next  0.9.9 - 14.2.31
+
+  Depends on vulnerable versions of @ampproject/toolbox-optimizer
+
+  Depends on vulnerable versions of @babel/runtime
+
+  Depends on vulnerable versions of browserslist
+
+  Depends on vulnerable versions of cache-loader
+
+  Depends on vulnerable versions of compression
+
+  Depends on vulnerable versions of cookie
+
+  Depends on vulnerable versions of css-loader
+
+  Depends on vulnerable versions of cssnano-simple
+
+  Depends on vulnerable versions of devalue
+
+  Depends on vulnerable versions of file-loader
+
+  Depends on vulnerable versions of fork-ts-checker-webpack-plugin
+
+  Depends on vulnerable versions of http-proxy
+
+  Depends on vulnerable versions of json5
+
+  Depends on vulnerable versions of jsonwebtoken
+
+  Depends on vulnerable versions of launch-editor
+
+  Depends on vulnerable versions of loader-utils
+
+  Depends on vulnerable versions of mini-css-extract-plugin
+
+  Depends on vulnerable versions of node-fetch
+
+  Depends on vulnerable versions of path-to-regexp
+
+  Depends on vulnerable versions of postcss-flexbugs-fixes
+
+  Depends on vulnerable versions of postcss-loader
+
+  Depends on vulnerable versions of postcss-preset-env
+
+  Depends on vulnerable versions of resolve-url-loader
+
+  Depends on vulnerable versions of send
+
+  Depends on vulnerable versions of style-loader
+
+  Depends on vulnerable versions of styled-jsx
+
+  Depends on vulnerable versions of terser
+
+  Depends on vulnerable versions of webpack
+
+  Depends on vulnerable versions of webpack-dev-middleware
+
+  Depends on vulnerable versions of webpack-hot-middleware
+
+  node_modules/next
+
+
+
+ansi-html  <0.0.8
+
+Severity: high
+
+Uncontrolled Resource Consumption in ansi-html - https://github.com/advisories/GHSA-whgm-jr23-g3j9
+
+fix available via `npm audit fix`
+
+node_modules/ansi-html
+
+  webpack-hot-middleware  2.9.0 - 2.25.0
+
+  Depends on vulnerable versions of ansi-html
+
+  node_modules/webpack-hot-middleware
+
+
+
+braces  <3.0.3
+
+Severity: high
+
+Uncontrolled resource consumption in braces - https://github.com/advisories/GHSA-grv7-fg5c-xmjg
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/fork-ts-checker-webpack-plugin/node_modules/braces
+
+node_modules/watchpack-chokidar2/node_modules/braces
+
+node_modules/webpack/node_modules/braces
+
+  chokidar  1.3.0 - 2.1.8
+
+  Depends on vulnerable versions of anymatch
+
+  Depends on vulnerable versions of braces
+
+  Depends on vulnerable versions of readdirp
+
+  node_modules/watchpack-chokidar2/node_modules/chokidar
+
+    watchpack-chokidar2  *
+
+    Depends on vulnerable versions of chokidar
+
+    node_modules/watchpack-chokidar2
+
+      watchpack  1.7.2 - 1.7.5
+
+      Depends on vulnerable versions of watchpack-chokidar2
+
+      node_modules/webpack/node_modules/watchpack
+
+  micromatch  <=4.0.7
+
+  Depends on vulnerable versions of braces
+
+  node_modules/fork-ts-checker-webpack-plugin/node_modules/micromatch
+
+  node_modules/watchpack-chokidar2/node_modules/micromatch
+
+  node_modules/webpack/node_modules/micromatch
+
+    anymatch  1.2.0 - 2.0.0
+
+    Depends on vulnerable versions of micromatch
+
+    node_modules/watchpack-chokidar2/node_modules/anymatch
+
+    fork-ts-checker-webpack-plugin  0.4.14 - 4.1.6
+
+    Depends on vulnerable versions of micromatch
+
+    node_modules/fork-ts-checker-webpack-plugin
+
+    readdirp  2.2.0 - 2.2.1
+
+    Depends on vulnerable versions of micromatch
+
+    node_modules/watchpack-chokidar2/node_modules/readdirp
+
+    webpack  2.0.0-beta - 5.1.0
+
+    Depends on vulnerable versions of micromatch
+
+    Depends on vulnerable versions of node-libs-browser
+
+    Depends on vulnerable versions of terser-webpack-plugin
+
+    node_modules/webpack
+
+      cache-loader  >=2.0.0
+
+      Depends on vulnerable versions of webpack
+
+      node_modules/cache-loader
+
+      css-loader  0.15.0 - 4.3.0
+
+      Depends on vulnerable versions of icss-utils
+
+      Depends on vulnerable versions of postcss
+
+      Depends on vulnerable versions of postcss-modules-extract-imports
+
+      Depends on vulnerable versions of postcss-modules-local-by-default
+
+      Depends on vulnerable versions of postcss-modules-scope
+
+      Depends on vulnerable versions of postcss-modules-values
+
+      Depends on vulnerable versions of webpack
+
+      node_modules/css-loader
+
+      file-loader  3.0.0 - 4.3.0
+
+      Depends on vulnerable versions of webpack
+
+      node_modules/file-loader
+
+      mini-css-extract-plugin  <=0.9.0
+
+      Depends on vulnerable versions of webpack
+
+      node_modules/mini-css-extract-plugin
+
+      style-loader  1.0.0 - 1.0.2
+
+      Depends on vulnerable versions of webpack
+
+      node_modules/style-loader
+
+      terser-webpack-plugin  <=5.3.16
+
+      Depends on vulnerable versions of serialize-javascript
+
+      Depends on vulnerable versions of webpack
+
+      node_modules/terser-webpack-plugin
+
+      webpack-dev-middleware  <=5.3.3
+
+      Depends on vulnerable versions of webpack
+
+      Depends on vulnerable versions of webpack-log
+
+      node_modules/webpack-dev-middleware
+
+
+
+browserslist  4.0.0 - 4.16.4
+
+Severity: moderate
+
+Regular Expression Denial of Service in browserslist - https://github.com/advisories/GHSA-w8qv-6jwh-64r5
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/next/node_modules/browserslist
+
+
+
+cookie  <0.7.0
+
+cookie accepts cookie name, path, and domain with out of bounds characters - https://github.com/advisories/GHSA-pxg6-pf52-xh8x
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/cookie
+
+
+
+devalue  <=5.6.3
+
+Severity: high
+
+devalue prototype pollution vulnerability - https://github.com/advisories/GHSA-vj54-72f3-p5jv
+
+devalue affected by CPU and memory amplification from sparse arrays - https://github.com/advisories/GHSA-33hq-fvwr-56pm
+
+devalue `uneval`ed code can create objects with polluted prototypes when `eval`ed - https://github.com/advisories/GHSA-8qm3-746x-r74r
+
+devalue has prototype pollution in devalue.parse and devalue.unflatten - https://github.com/advisories/GHSA-cfw5-2vxh-hr84
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/devalue
+
+
+
+elliptic  *
+
+Elliptic Uses a Cryptographic Primitive with a Risky Implementation - https://github.com/advisories/GHSA-848j-6mx2-7j84
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/elliptic
+
+  browserify-sign  >=2.4.0
+
+  Depends on vulnerable versions of elliptic
+
+  node_modules/browserify-sign
+
+    crypto-browserify  >=3.4.0
+
+    Depends on vulnerable versions of browserify-sign
+
+    Depends on vulnerable versions of create-ecdh
+
+    node_modules/crypto-browserify
+
+      node-libs-browser  0.4.2 || >=1.0.0
+
+      Depends on vulnerable versions of crypto-browserify
+
+      node_modules/node-libs-browser
+
+  create-ecdh  *
+
+  Depends on vulnerable versions of elliptic
+
+  node_modules/create-ecdh
+
+
+
+http-proxy  <1.18.1
+
+Severity: high
+
+Denial of Service in http-proxy - https://github.com/advisories/GHSA-6x33-pw7p-hmpq
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/http-proxy
+
+
+
+json5  2.0.0 - 2.2.1
+
+Severity: high
+
+Prototype Pollution in JSON5 via Parse Method - https://github.com/advisories/GHSA-9c47-m6qq-7p4h
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/next/node_modules/json5
+
+
+
+jsonwebtoken  <=8.5.1
+
+Severity: high
+
+jsonwebtoken unrestricted key type could lead to legacy keys usage  - https://github.com/advisories/GHSA-8cf7-32gw-wr33
+
+jsonwebtoken's insecure implementation of key retrieval function could lead to Forgeable Public/Private Tokens from RSA to HMAC - https://github.com/advisories/GHSA-hjrf-2m68-5959
+
+jsonwebtoken vulnerable to signature validation bypass due to insecure default algorithm in jwt.verify() - https://github.com/advisories/GHSA-qwph-4952-7xr6
+
+fix available via `npm audit fix`
+
+node_modules/jsonwebtoken
+
+
+
+launch-editor  <=2.8.2
+
+Severity: high
+
+launch-editor vulnerable to command injection via the crafted request on Windows - https://github.com/advisories/GHSA-c27g-q93r-2cwf
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/launch-editor
+
+
+
+loader-utils  <=1.4.1 || 2.0.0 - 2.0.3
+
+Severity: critical
+
+Prototype pollution in webpack loader-utils - https://github.com/advisories/GHSA-76p3-8jx3-jpfq
+
+Prototype pollution in webpack loader-utils - https://github.com/advisories/GHSA-76p3-8jx3-jpfq
+
+loader-utils is vulnerable to Regular Expression Denial of Service (ReDoS) via url variable - https://github.com/advisories/GHSA-3rfm-jhwj-7488
+
+loader-utils is vulnerable to Regular Expression Denial of Service (ReDoS) via url variable - https://github.com/advisories/GHSA-3rfm-jhwj-7488
+
+loader-utils is vulnerable to Regular Expression Denial of Service (ReDoS) - https://github.com/advisories/GHSA-hhq3-ff78-jv3g
+
+loader-utils is vulnerable to Regular Expression Denial of Service (ReDoS) - https://github.com/advisories/GHSA-hhq3-ff78-jv3g
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/adjust-sourcemap-loader/node_modules/loader-utils
+
+node_modules/loader-utils
+
+node_modules/next/node_modules/styled-jsx/node_modules/loader-utils
+
+node_modules/resolve-url-loader/node_modules/loader-utils
+
+  adjust-sourcemap-loader  0.1.0 - 2.0.0
+
+  Depends on vulnerable versions of loader-utils
+
+  Depends on vulnerable versions of object-path
+
+  node_modules/adjust-sourcemap-loader
+
+    resolve-url-loader  0.0.1-experiment-postcss || 3.0.0-alpha.1 - 4.0.0
+
+    Depends on vulnerable versions of adjust-sourcemap-loader
+
+    Depends on vulnerable versions of loader-utils
+
+    Depends on vulnerable versions of postcss
+
+    node_modules/resolve-url-loader
+
+  styled-jsx  3.0.0 - 5.0.0-beta.7
+
+  Depends on vulnerable versions of loader-utils
+
+  node_modules/next/node_modules/styled-jsx
+
+
+
+
+
+
+
+node-fetch  <=2.6.6
+
+Severity: high
+
+node-fetch forwards secure headers to untrusted sites - https://github.com/advisories/GHSA-r683-j2x4-v87g
+
+The `size` option isn't honored after following a redirect in node-fetch - https://github.com/advisories/GHSA-w7rc-rwvf-8q5r
+
+fix available via `npm audit fix`
+
+node_modules/node-fetch
+
+
+
+object-path  <=0.11.7
+
+Severity: high
+
+Prototype Pollution in object-path - https://github.com/advisories/GHSA-v39p-96qg-c8rf
+
+Prototype pollution in object-path - https://github.com/advisories/GHSA-cwx2-736x-mf6w
+
+Prototype Pollution in object-path - https://github.com/advisories/GHSA-8v63-cqqc-6r2c
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/object-path
+
+
+
+on-headers  <1.1.0
+
+on-headers is vulnerable to http response header manipulation - https://github.com/advisories/GHSA-76c9-3jph-rj3q
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/on-headers
+
+  compression  1.0.3 - 1.8.0
+
+  Depends on vulnerable versions of on-headers
+
+  node_modules/compression
+
+
+
+path-to-regexp  4.0.0 - 6.2.2
+
+Severity: high
+
+path-to-regexp outputs backtracking regular expressions - https://github.com/advisories/GHSA-9wv6-86v2-598j
+
+fix available via `npm audit fix`
+
+node_modules/path-to-regexp
+
+
+
+postcss  <=8.5.9
+
+Severity: moderate
+
+Regular Expression Denial of Service in postcss - https://github.com/advisories/GHSA-hwj9-h5mp-3pm3
+
+Regular Expression Denial of Service in postcss - https://github.com/advisories/GHSA-566m-qj78-rww5
+
+PostCSS line return parsing error - https://github.com/advisories/GHSA-7fh5-64p2-3v2j
+
+PostCSS has XSS via Unescaped </style> in its CSS Stringify Output - https://github.com/advisories/GHSA-qx2v-qp2m-jg93
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/autoprefixer/node_modules/postcss
+
+node_modules/css-blank-pseudo/node_modules/postcss
+
+node_modules/css-has-pseudo/node_modules/postcss
+
+node_modules/css-loader/node_modules/postcss
+
+node_modules/css-prefers-color-scheme/node_modules/postcss
+
+node_modules/cssnano-preset-simple/node_modules/postcss
+
+node_modules/cssnano-simple/node_modules/postcss
+
+node_modules/icss-utils/node_modules/postcss
+
+node_modules/postcss-attribute-case-insensitive/node_modules/postcss
+
+node_modules/postcss-color-functional-notation/node_modules/postcss
+
+node_modules/postcss-color-gray/node_modules/postcss
+
+node_modules/postcss-color-hex-alpha/node_modules/postcss
+
+node_modules/postcss-color-mod-function/node_modules/postcss
+
+node_modules/postcss-color-rebeccapurple/node_modules/postcss
+
+node_modules/postcss-custom-media/node_modules/postcss
+
+node_modules/postcss-custom-properties/node_modules/postcss
+
+node_modules/postcss-custom-selectors/node_modules/postcss
+
+node_modules/postcss-dir-pseudo-class/node_modules/postcss
+
+node_modules/postcss-double-position-gradients/node_modules/postcss
+
+node_modules/postcss-env-function/node_modules/postcss
+
+node_modules/postcss-flexbugs-fixes/node_modules/postcss
+
+node_modules/postcss-focus-visible/node_modules/postcss
+
+node_modules/postcss-focus-within/node_modules/postcss
+
+node_modules/postcss-font-variant/node_modules/postcss
+
+node_modules/postcss-gap-properties/node_modules/postcss
+
+node_modules/postcss-image-set-function/node_modules/postcss
+
+node_modules/postcss-initial/node_modules/postcss
+
+node_modules/postcss-lab-function/node_modules/postcss
+
+node_modules/postcss-loader/node_modules/postcss
+
+node_modules/postcss-logical/node_modules/postcss
+
+node_modules/postcss-media-minmax/node_modules/postcss
+
+node_modules/postcss-modules-extract-imports/node_modules/postcss
+
+node_modules/postcss-modules-local-by-default/node_modules/postcss
+
+node_modules/postcss-modules-scope/node_modules/postcss
+
+node_modules/postcss-modules-values/node_modules/postcss
+
+node_modules/postcss-nesting/node_modules/postcss
+
+node_modules/postcss-overflow-shorthand/node_modules/postcss
+
+node_modules/postcss-page-break/node_modules/postcss
+
+node_modules/postcss-place/node_modules/postcss
+
+node_modules/postcss-preset-env/node_modules/postcss
+
+node_modules/postcss-pseudo-class-any-link/node_modules/postcss
+
+node_modules/postcss-replace-overflow-wrap/node_modules/postcss
+
+node_modules/postcss-selector-matches/node_modules/postcss
+
+node_modules/postcss-selector-not/node_modules/postcss
+
+node_modules/resolve-url-loader/node_modules/postcss
+
+  autoprefixer  1.0.20131222 - 9.8.8
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/autoprefixer
+
+  css-blank-pseudo  <=1.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/css-blank-pseudo
+
+  css-has-pseudo  <=1.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/css-has-pseudo
+
+    postcss-preset-env  <=7.0.0
+
+    Depends on vulnerable versions of autoprefixer
+
+    Depends on vulnerable versions of css-blank-pseudo
+
+    Depends on vulnerable versions of css-has-pseudo
+
+    Depends on vulnerable versions of css-prefers-color-scheme
+
+    Depends on vulnerable versions of postcss
+
+    Depends on vulnerable versions of postcss-attribute-case-insensitive
+
+    Depends on vulnerable versions of postcss-color-functional-notation
+
+    Depends on vulnerable versions of postcss-color-gray
+
+    Depends on vulnerable versions of postcss-color-hex-alpha
+
+    Depends on vulnerable versions of postcss-color-mod-function
+
+    Depends on vulnerable versions of postcss-color-rebeccapurple
+
+    Depends on vulnerable versions of postcss-custom-media
+
+    Depends on vulnerable versions of postcss-custom-properties
+
+    Depends on vulnerable versions of postcss-custom-selectors
+
+    Depends on vulnerable versions of postcss-dir-pseudo-class
+
+    Depends on vulnerable versions of postcss-double-position-gradients
+
+    Depends on vulnerable versions of postcss-env-function
+
+    Depends on vulnerable versions of postcss-focus-visible
+
+    Depends on vulnerable versions of postcss-focus-within
+
+    Depends on vulnerable versions of postcss-font-variant
+
+    Depends on vulnerable versions of postcss-gap-properties
+
+    Depends on vulnerable versions of postcss-image-set-function
+
+    Depends on vulnerable versions of postcss-initial
+
+    Depends on vulnerable versions of postcss-lab-function
+
+    Depends on vulnerable versions of postcss-logical
+
+    Depends on vulnerable versions of postcss-media-minmax
+
+    Depends on vulnerable versions of postcss-nesting
+
+    Depends on vulnerable versions of postcss-overflow-shorthand
+
+    Depends on vulnerable versions of postcss-page-break
+
+    Depends on vulnerable versions of postcss-place
+
+    Depends on vulnerable versions of postcss-pseudo-class-any-link
+
+    Depends on vulnerable versions of postcss-replace-overflow-wrap
+
+    Depends on vulnerable versions of postcss-selector-matches
+
+    Depends on vulnerable versions of postcss-selector-not
+
+    node_modules/postcss-preset-env
+
+  css-prefers-color-scheme  <=4.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/css-prefers-color-scheme
+
+  cssnano-preset-simple  <=1.2.2 || 1.3.1
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/cssnano-preset-simple
+
+  cssnano-simple  <=1.2.2
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/cssnano-simple
+
+  icss-utils  <=4.1.1
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/icss-utils
+
+    postcss-modules-local-by-default  <=4.0.0-rc.4
+
+    Depends on vulnerable versions of icss-utils
+
+    Depends on vulnerable versions of postcss
+
+    node_modules/postcss-modules-local-by-default
+
+    postcss-modules-values  <=4.0.0-rc.5
+
+    Depends on vulnerable versions of icss-utils
+
+    Depends on vulnerable versions of postcss
+
+    node_modules/postcss-modules-values
+
+  postcss-attribute-case-insensitive  <=4.0.2
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-attribute-case-insensitive
+
+  postcss-color-functional-notation  <=3.0.2
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-color-functional-notation
+
+  postcss-color-gray  >=3.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-color-gray
+
+  postcss-color-hex-alpha  1.3.0 - 6.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-color-hex-alpha
+
+  postcss-color-mod-function  <=3.0.3
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-color-mod-function
+
+  postcss-color-rebeccapurple  1.2.0 - 6.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-color-rebeccapurple
+
+  postcss-custom-media  4.0.0 - 7.0.8
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-custom-media
+
+  postcss-custom-properties  3.3.0 - 10.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-custom-properties
+
+  postcss-custom-selectors  2.3.0 - 5.1.2
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-custom-selectors
+
+  postcss-dir-pseudo-class  <=5.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-dir-pseudo-class
+
+  postcss-double-position-gradients  <=2.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-double-position-gradients
+
+  postcss-env-function  <=3.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-env-function
+
+  postcss-flexbugs-fixes  <=4.2.1
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-flexbugs-fixes
+
+  postcss-focus-visible  <=5.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-focus-visible
+
+  postcss-focus-within  <=4.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-focus-within
+
+  postcss-font-variant  1.2.0 - 4.0.1
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-font-variant
+
+  postcss-gap-properties  <=2.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-gap-properties
+
+  postcss-image-set-function  <=3.0.1
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-image-set-function
+
+  postcss-initial  <=3.0.4
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-initial
+
+  postcss-lab-function  <=3.1.2
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-lab-function
+
+  postcss-loader  <=4.0.1
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-loader
+
+  postcss-logical  <=4.0.2
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-logical
+
+  postcss-media-minmax  1.2.0 - 4.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-media-minmax
+
+  postcss-modules-extract-imports  <=2.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-modules-extract-imports
+
+  postcss-modules-scope  <=2.2.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-modules-scope
+
+  postcss-nesting  <=7.0.1
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-nesting
+
+  postcss-overflow-shorthand  <=2.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-overflow-shorthand
+
+  postcss-page-break  <=2.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-page-break
+
+  postcss-place  <=5.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-place
+
+  postcss-pseudo-class-any-link  <=6.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-pseudo-class-any-link
+
+  postcss-replace-overflow-wrap  <=3.0.0
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-replace-overflow-wrap
+
+  postcss-selector-matches  *
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-selector-matches
+
+  postcss-selector-not  <=4.0.1
+
+  Depends on vulnerable versions of postcss
+
+  node_modules/postcss-selector-not
+
+
+
+send  <0.19.0
+
+send vulnerable to template injection that can lead to XSS - https://github.com/advisories/GHSA-m6fv-jmcg-4jfg
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/send
+
+
+
+serialize-javascript  <=7.0.2
+
+Severity: high
+
+Serialize JavaScript is Vulnerable to RCE via RegExp.flags and Date.prototype.toISOString() - https://github.com/advisories/GHSA-5c6j-r48x-rmvq
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/serialize-javascript
+
+
+
+terser  <4.8.1
+
+Severity: high
+
+Terser insecure use of regular expressions leads to ReDoS - https://github.com/advisories/GHSA-4wf5-vphf-c2xc
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/@ampproject/toolbox-optimizer/node_modules/terser
+
+node_modules/terser
+
+  @ampproject/toolbox-optimizer  2.0.0-alpha.0 - 2.7.1-alpha.0
+
+  Depends on vulnerable versions of terser
+
+  node_modules/@ampproject/toolbox-optimizer
+
+
+
+uuid  <11.1.1
+
+Severity: moderate
+
+uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided - https://github.com/advisories/GHSA-w5hq-g745-h8pq
+
+fix available via `npm audit fix --force`
+
+Will install next@16.2.9, which is a breaking change
+
+node_modules/uuid
+
+  webpack-log  1.1.0 - 2.0.0
+
+  Depends on vulnerable versions of uuid
+
+  node_modules/webpack-log
+
+
+
+
+
+91 vulnerabilities (9 low, 56 moderate, 25 high, 1 critical)
+
+
+
+To address issues that do not require attention, run:
+
+  npm audit fix
+
+
+
+To address all issues (including breaking changes), run:
+
+  npm audit fix --force
+
+nancyamaro@Nancys-MacBook-Neo satoshis-parabox % npm install @worldcoin/idkit
+
+npm error code ERESOLVE
+
+npm error ERESOLVE could not resolve
+
+npm error
+
+npm error While resolving: next@9.3.3
+
+npm error Found: react@19.2.4
+
+npm error node_modules/react
+
+npm error   peer react@"^19.2.4" from react-dom@19.2.4
+
+npm error   node_modules/react-dom
+
+npm error     react-dom@"19.2.4" from the root project
+
+npm error     peer react-dom@">=18" from @worldcoin/idkit@4.1.8
+
+npm error     node_modules/@worldcoin/idkit
+
+npm error       @worldcoin/idkit@"^4.1.8" from the root project
+
+npm error   react@"19.2.4" from the root project
+
+npm error   1 more (@worldcoin/idkit)
+
+npm error
+
+npm error Could not resolve dependency:
+
+npm error peer react@"^16.6.0" from next@9.3.3
+
+npm error node_modules/next
+
+npm error   next@"^9.3.3" from the root project
+
+npm error
+
+npm error Conflicting peer dependency: react@16.14.0
+
+npm error node_modules/react
+
+npm error   peer react@"^16.6.0" from next@9.3.3
+
+npm error   node_modules/next
+
+npm error     next@"^9.3.3" from the root project
+
+npm error
+
+npm error Fix the upstream dependency conflict, or retry this command with --force or --legacy-peer-deps to accept an incorrect (and potentially broken) dependency resolution.
+
+npm error
+
+npm error
+
+npm error For a full report see:
+
+npm error /Users/nancyamaro/.npm/_logs/2026-06-13T05_58_37_012Z-eresolve-report.txt
+
+npm error A complete log of this run can be found in: /Users/nancyamaro/.npm/_logs/2026-06-13T05_58_37_012Z-debug-0.log
+
+nancyamaro@Nancys-MacBook-Neo satoshis-parabox % 
+
+nancyamaro@Nancys-MacBook-Neo satoshis-parabox % npm run dev
+
+
+
+> satoshis-parabox@0.1.0 dev
+
+> next dev
+
+
+
+[ wait ]  starting the development server ...
+
+[ info ]  waiting on http://localhost:3000 ...
+
+Error: Configuring Next.js via 'next.config.ts' is not supported. Please replace the file with 'next.config.js'.
+
+    at Object.loadConfig [as default] (/Users/nancyamaro/satoshis-parabox/node_modules/next/dist/next-server/server/config.js:204:19)
+
+    at new Server (/Users/nancyamaro/satoshis-parabox/node_modules/next/dist/next-server/server/next-server.js:50:43)
+
+    at new DevServer (/Users/nancyamaro/satoshis-parabox/node_modules/next/dist/server/next-dev-server.js:1:2851)
+
+    at createServer (/Users/nancyamaro/satoshis-parabox/node_modules/next/dist/server/next.js:2:105)
+
+    at start (/Users/nancyamaro/satoshis-parabox/node_modules/next/dist/server/lib/start-server.js:1:323)
+
+    at nextDev (/Users/nancyamaro/satoshis-parabox/node_modules/next/dist/cli/next-dev.js:21:279)
+
+    at /Users/nancyamaro/satoshis-parabox/node_modules/next/dist/bin/next:28:339
+
+nancyamaro@Nancys-MacBook-Neo satoshis-parabox % 
