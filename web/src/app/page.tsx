@@ -54,7 +54,7 @@ export default function SatoshiParaBox() {
   const [config, setConfig] = useState({
     worldIdAppId: 'app_staging_satoshis_parabox',
     worldIdAction: 'user-login',
-    hederaTopicId: '0.0.4589201',
+    hederaTopicId: '0.0.9224062',
     walrusPublisher: 'https://publisher.walrus-testnet.walrus.space',
     walrusAggregator: 'https://aggregator.walrus-testnet.walrus.space',
     isDemoMode: true
