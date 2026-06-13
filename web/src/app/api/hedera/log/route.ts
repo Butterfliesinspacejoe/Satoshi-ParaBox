@@ -9,6 +9,37 @@ async function getHederaSdk() {
   return hashgraphSdk;
 }
 
+async function getPrivateKey(sdk: any, operatorId: string, operatorKey: string) {
+  try {
+    const network = process.env.HEDERA_NETWORK || 'testnet';
+    const mirrorBase = network.toLowerCase() === 'mainnet' 
+      ? 'https://mainnet-public.mirrornode.hedera.com' 
+      : network.toLowerCase() === 'previewnet'
+      ? 'https://previewnet.mirrornode.hedera.com'
+      : 'https://testnet.mirrornode.hedera.com';
+
+    const response = await fetch(`${mirrorBase}/api/v1/accounts/${operatorId}`);
+    if (response.ok) {
+      const data = await response.json();
+      if (data.key && data.key._type === 'ECDSA_SECP256K1') {
+        return sdk.PrivateKey.fromStringECDSA(operatorKey);
+      } else if (data.key && data.key._type === 'ED25519') {
+        return sdk.PrivateKey.fromStringED25519(operatorKey);
+      }
+    }
+  } catch (err) {
+    console.warn('Failed to fetch account key type from mirror node:', err);
+  }
+  
+  try {
+    if (operatorKey.startsWith('0x') || operatorKey.length === 64) {
+      return sdk.PrivateKey.fromStringECDSA(operatorKey);
+    }
+  } catch {}
+  
+  return sdk.PrivateKey.fromString(operatorKey);
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -65,8 +96,8 @@ export async function POST(request: Request) {
       client = sdk.Client.forTestnet();
     }
 
-    // Set operator credentials
-    const privateKey = sdk.PrivateKey.fromString(operatorKey);
+    // Set operator credentials using smart key resolver
+    const privateKey = await getPrivateKey(sdk, operatorId, operatorKey);
     client.setOperator(operatorId, privateKey);
 
     // Prepare JSON metadata message to log on Hedera Consensus Service
