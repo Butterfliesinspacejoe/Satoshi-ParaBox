@@ -1,4 +1,4 @@
-Gemini Conversation
+Gemini Conversation - Conversations between Nancy and Gemini about Project
 
 Can you clean up these notes for me?
 Here is a cleaned-up, organized transcription of your handwritten project notes from image.png. I have structured the technical stack, the core project concept, and the operational services to make them easily readable.
@@ -28,3 +28,918 @@ Technical Assistance ("The Fixer"): Providing a physical representative to assis
 Data Upload & Environmental Offset:
 A secure data upload service followed by paper shredding and paper recycling.
 Designed to subsidize income and offset the project's environmental/energy usage footprint.
+
+If I want to start a hackathon project with these ideas, where do I start?
+
+To turn Satoshi’s ParaBox from a handwritten concept into a functioning hackathon project, you need to quickly validate the core technical loops and build a scrappy, working MVP. Because hackathons prioritize working software over flawless architecture, your immediate goal is to prove that these distinct web3 protocols can actually talk to each other.Here is a step-by-step roadmap to get your project off the ground:Step 1: Define the "Minimum Viable Epic"Before touching code, scope down the notes into a single, cohesive user flow you can realistically build in a weekend:Identity: A user verifies their identity using World ID to log into a frontend dashboard.Routing: The dashboard resolves or assigns them a unique ENS subdomain (e.g., user.satoshisparabox.eth) that acts as their secure data pointer.Secure Messaging: The user can send or receive an encrypted, high-security alert or audit log via Hedera (utilizing Hedera Consensus Service for a tamper-proof log without complex smart contracts).Storage: Any sensitive file uploaded is pushed directly to Walrus decentralized storage, with the storage hash linked to their ENS profile or Hedera message log.Step 2: Set Up the Development EnvironmentDon't waste time configuring a complex monorepo. Start with a fast, modern frontend boilerplate:Frontend Framework: Use Next.js or Vite with React.Web3 Onboarding: Use RainbowKit or AppKit (Reown/WalletConnect) to easily handle wallet connections and ENS resolution out of the box.Step 3: Tackle the Integrations (In Order of Priority)1. Identity & Auth (World ID)Start here, as it gatekeeps the rest of the application.Go to the World Developer Portal and set up a new action.Use the @worldcoin/idkit React package to drop an IDKit widget into your login screen.Hackathon Shortcut: Use the World ID Simulator to test successful verifications without needing a physical Orb on hand.2. Storage Layer (Walrus)Get data handling out of the way early so you have something to reference in your messaging logs.Look into the Walrus developer documentation for their HTTP API or TS SDK.Since Walrus specializes in raw blob storage, write a simple upload function on your frontend that takes a text blob or file, sends it to a Walrus aggregator, and returns a blobIndex or storage hash.3. Secure Event Logging (Hedera)Your notes specify "No Solidity Allowed!" for this layer, which plays perfectly into Hedera's native services.Use the Hedera Consensus Service (HCS) via the Hedera JavaScript SDK.Instead of writing a smart contract, create an HCS Topic. When a user uploads data or a message is "auto-deleted," submit a transaction to that topic containing the encrypted metadata (like the Walrus blob ID). This gives you a high-throughput, immutable, and compliant audit trail using pure JavaScript.4. Dynamic Routing (ENS Subdomains)Connecting the user's wallet to a custom workspace.If registering live subdomains onchain is too slow or costly for a hackathon demo, look into NameStone (a popular tool at hackathons for issuing gasless, offchain ENS subdomains instantly) or use standard viem/ethers.js interactions with the ENS registry on a testnet (like Sepolia).Step 4: Build the "Auto-Delete / Lockout" IllusionImplementing a true cryptographic time-lock or automated backend cron-job can be risky under a tight hackathon deadline.The Frontend Trick: Store a time-to-live (TTL) timestamp inside your Hedera message metadata or local state.The Action: When the frontend detects the current time has passed the TTL, trigger an immediate UI wipe ("Auto-Lockout") and clear the active session keys, forcing a re-verification via World ID to fetch the decryption keys again.Step 5: Refine the PitchThe final piece of your notes discusses the physical service aspect—the "Fixer" representative, paper shredding, and environmental offsets.Do not spend precious time trying to code a paper-shredding marketplace simulator.Instead, save this for your slide deck and video demo. Use it to frame the business model and real-world impact of Satoshi’s ParaBox, showing the judges that you have thought beyond the code to how vulnerable or non-technical populations would actually use this privacy stack.
+
+
+Gemini
+Project Notes Cleanup and Organization
+https://gemini.google.com/share/6e7c40cb5326
+Created with 3.5 Flash June 12, 2026 at 10:20 PM
+Published June 13, 2026 at 01:54 AM
+Can you clean up these notes for me?
+
+Here is a cleaned-up, organized transcription of your handwritten project notes from image.png. I have structured the technical stack, the core project concept, and the operational services to make them easily readable.
+
+Technical Stack & Architecture
+ENS (Ethereum Name Service)
+
+Individualized medical/privacy data site (SVI).
+
+Concept: An ENS subdomain "privacy" storage site integrated with messaging and storage.
+
+Walrus
+
+Storage of health data.
+
+Handles the decentralized storage layer for the ENS site.
+
+World (World ID)
+
+Verification for individualized accounts to access sensitive data.
+
+Hedera
+
+HIPAA-gov level security messaging.
+
+Constraint Note: "No Solidity Allowed!"
+
+Data & Message Protocol
+
+Data and messages features: "Auto Delete" or "Auto Lockout" w/o (without) user interaction.
+
+Data Indexing & Analytics (Under Evaluation)
+
+The Graph: Potential for data indexing options and analytics.
+
+Key questions to solve: How to handle data that exists vs. data that has been deleted? Integration with a World ID Registry?
+
+Project Concept & Philosophy
+"It matters not if Satoshi existed, but instead that which the potential of the existence or destruction of his data represents."
+
+Project Name: "Satoshi's ParaBox"
+Services Offered
+Orb & ID Verification: Utilizing the World Orb to verify user identities securely.
+
+Technical Assistance ("The Fixer"): Providing a physical representative to assist users who are not tech-savvy or who need to delegate the setup and management of these privacy services.
+
+Data Upload & Environmental Offset:
+
+A secure data upload service followed by paper shredding and paper recycling.
+
+Designed to subsidize income and offset the project's environmental/energy usage footprint.
+
+If I want to start a hackathon project with these ideas, where do I start?
+
+To turn Satoshi’s ParaBox from a handwritten concept into a functioning hackathon project, you need to quickly validate the core technical loops and build a scrappy, working MVP. Because hackathons prioritize working software over flawless architecture, your immediate goal is to prove that these distinct web3 protocols can actually talk to each other.
+
+Here is a step-by-step roadmap to get your project off the ground:
+
+Step 1: Define the "Minimum Viable Epic"
+Before touching code, scope down the notes into a single, cohesive user flow you can realistically build in a weekend:
+
+Identity: A user verifies their identity using World ID to log into a frontend dashboard.
+
+Routing: The dashboard resolves or assigns them a unique ENS subdomain (e.g., user.satoshisparabox.eth) that acts as their secure data pointer.
+
+Secure Messaging: The user can send or receive an encrypted, high-security alert or audit log via Hedera (utilizing Hedera Consensus Service for a tamper-proof log without complex smart contracts).
+
+Storage: Any sensitive file uploaded is pushed directly to Walrus decentralized storage, with the storage hash linked to their ENS profile or Hedera message log.
+
+Step 2: Set Up the Development Environment
+Don't waste time configuring a complex monorepo. Start with a fast, modern frontend boilerplate:
+
+Frontend Framework: Use Next.js or Vite with React.
+
+Web3 Onboarding: Use RainbowKit or AppKit (Reown/WalletConnect) to easily handle wallet connections and ENS resolution out of the box.
+
+Step 3: Tackle the Integrations (In Order of Priority)
+1. Identity & Auth (World ID)
+Start here, as it gatekeeps the rest of the application.
+
+Go to the World Developer Portal and set up a new action.
+
+Use the @worldcoin/idkit React package to drop an IDKit widget into your login screen.
+
+Hackathon Shortcut: Use the World ID Simulator to test successful verifications without needing a physical Orb on hand.
+
+2. Storage Layer (Walrus)
+Get data handling out of the way early so you have something to reference in your messaging logs.
+
+Look into the Walrus developer documentation for their HTTP API or TS SDK.
+
+Since Walrus specializes in raw blob storage, write a simple upload function on your frontend that takes a text blob or file, sends it to a Walrus aggregator, and returns a blobIndex or storage hash.
+
+3. Secure Event Logging (Hedera)
+Your notes specify "No Solidity Allowed!" for this layer, which plays perfectly into Hedera's native services.
+
+Use the Hedera Consensus Service (HCS) via the Hedera JavaScript SDK.
+
+Instead of writing a smart contract, create an HCS Topic. When a user uploads data or a message is "auto-deleted," submit a transaction to that topic containing the encrypted metadata (like the Walrus blob ID). This gives you a high-throughput, immutable, and compliant audit trail using pure JavaScript.
+
+4. Dynamic Routing (ENS Subdomains)
+Connecting the user's wallet to a custom workspace.
+
+If registering live subdomains onchain is too slow or costly for a hackathon demo, look into NameStone (a popular tool at hackathons for issuing gasless, offchain ENS subdomains instantly) or use standard viem/ethers.js interactions with the ENS registry on a testnet (like Sepolia).
+
+Step 4: Build the "Auto-Delete / Lockout" Illusion
+Implementing a true cryptographic time-lock or automated backend cron-job can be risky under a tight hackathon deadline.
+
+The Frontend Trick: Store a time-to-live (TTL) timestamp inside your Hedera message metadata or local state.
+
+The Action: When the frontend detects the current time has passed the TTL, trigger an immediate UI wipe ("Auto-Lockout") and clear the active session keys, forcing a re-verification via World ID to fetch the decryption keys again.
+
+Step 5: Refine the Pitch
+The final piece of your notes discusses the physical service aspect—the "Fixer" representative, paper shredding, and environmental offsets.
+
+Do not spend precious time trying to code a paper-shredding marketplace simulator.
+
+Instead, save this for your slide deck and video demo. Use it to frame the business model and real-world impact of Satoshi’s ParaBox, showing the judges that you have thought beyond the code to how vulnerable or non-technical populations would actually use this privacy stack.
+
+What would you like to do next?
+
+Format a project readme template based on this stack
+
+Draft a 3-minute pitch deck outline for Satoshi's ParaBox
+
+Write a boilerplate Next.js component for World ID and Hedera HCS
+
+Can you help me in steps to get this project started? What is my step 1
+
+For a hackathon, Step 1 isn't coding, and it isn't designing the final UI. Step 1 is cracking the primary technical risk—the piece of the stack that could completely brick your project if you can't get it working.
+
+For Satoshi's ParaBox, your biggest hurdle is establishing the identity-to-routing bridge.
+
+Your True Step 1: The World ID to ENS Pipeline
+Before you build anything else, you must prove you can take a verified user from an Orb/World ID login and successfully map them to an individualized privacy subdomain. If you can't link these two, the rest of the architecture (messaging on Hedera, uploading to Walrus) won't have a secure anchor.
+
+Here is exactly how to execute Step 1 in your first few hours:
+
+1. Set Up the World ID Sandbox
+Do not wait for a physical Orb.
+
+Go to the World Developer Portal, create an account, and set up a new Action called login-parabox.
+
+Set the action type to Cloud (this lets you use the IDKit web widget).
+
+Keep the World ID Simulator open in a browser tab—this is how you will "fake" successful Orb verifications on your local machine.
+
+2. Grab a Free Hackathon Subdomain Handler
+Registering a real .eth domain and issuing on-chain subdomains during a hackathon is a nightmare—it's slow, expensive, and error-prone.
+
+Use NameStone. They provide a free API specifically popular at hackathons for handling gasless, off-chain ENS subnames.  
+GitHub
+
+You will use their API to instantly generate names like [verified-user].satoshisparabox.eth the second World ID clears them.  
+GitHub
+
+3. Build the Minimal Proof of Concept (PoC)
+Open a terminal, spin up a barebones Next.js or Vite app, and install the connection kit:
+
+Bash
+npm install @worldcoin/idkit wagmi viem
+Create a single page with one button: "Verify with World ID".
+
+Your goal for Step 1 is achieved when you can click that button, approve the pop-up in the World ID Simulator, and see a console log that says:
+"Success: User verified. Assigned subdomain: user_0xabc123.satoshisparabox.eth"
+
+Why this must be Step 1
+Once this core loop works, your project has an identity layer. Steps 2 and 3 become significantly easier because you now have a verified user routing string to pass along:  
+Tatum.io
+
+When you integrate Walrus next, you'll know exactly which subdomain metadata to attach to the file blobs.  
+Tatum.io
+
+When you send messages via Hedera, you'll have a verified ID to use as the sender/receiver alias on your HCS topics.
+
+Get this connection live first, and you'll clear the hardest hurdle before the hacking fatigue sets in.
+
+What would you like to do next?
+
+Create a basic boilerplate for the World ID verification component
+
+Generate the Next.js API route structure to issue subdomains via NameStone
+
+Outline Step 2: Integrating Walrus blob storage into the frontend
+
+Does it help that Im close to a physical orb, and I also have a WorldID. Can I use this information for my demo?
+
+Yes, having a physical Orb nearby and possessing a verified World ID is a massive advantage, but maybe not for the exact reason you think.
+
+During the actual coding phase of the hackathon, you will still want to rely on the developer simulator so you don't have to repeatedly pick up your phone and scan your eyes every time you reset your local server.
+
+However, you can use your live setup to elevate your live demo and pitch video from an abstract concept into an unforgettably cool, tangible presentation. Here is exactly how to leverage them:
+
+1. Run a Dual-Verification Demo ("Staging vs. Live")
+Judges love seeing things work in the real world. You can structure your demo video or live presentation into two parts:
+
+The Technical Deep Dive: Show the frontend interface processing quick mock logins using the developer portal's staging simulator to demonstrate how smooth the UX is.
+
+The Grand Finale: Switch your application config variables to your Production App ID. Bring up your actual, live web app interface on screen, generate the production QR code, pull out your personal phone with your actual verified World ID, and scan it on camera.
+
+Watching the terminal or UI instantly transition from "Awaiting Verification" to "Access Granted: Welcome, Human" using a live, Orb-verified credential makes a prototype feel like a production-ready product.
+
+2. Bring the Orb into "Satoshi’s ParaBox" Lore
+Your notes highlight a service called "The Fixer"—a physical representative who assists non-technical users with Orb setup, secure data uploads, and physical paper shredding.
+
+Because you are physically close to an Orb, use it as a prop for your project's narrative:
+
+Film Contextual B-Roll: Go to the physical Orb location and take a quick, high-quality 5-second video clip or photo of the Orb setup (if allowed/accessible).
+
+Elevate the Pitch Slide Deck: Use that real-world imagery in your presentation slides when explaining the onboarding layer of your project. Instead of using generic stock icons of "crypto infrastructure," you can say:
+
+"Satoshi’s ParaBox isn't just an abstract protocol cloud. It anchors back to physical hardware hubs like this Orb right here, where real humans transition their vulnerable physical documents into hyper-secure, self-deleting digital metadata."
+
+3. Maximize Your Judging Points
+If you look at the judging criteria for World ID hackathon tracks, they heavily weight "Depth of Understanding" and "Real-World Implementation Quality." By demonstrating that your project successfully verifies a live production credential instead of just passing hardcoded dummy data in a local simulator, you prove to the judges that your backend routing, zero-knowledge proof verification endpoint (api/v4/verify), and environmental variables are securely and correctly configured for the real mainnet environment. It sets you completely apart from teams who only built a pure simulation.
+
+How do I toggle my World ID app config between staging/simulator and production mainnet?
+
+Draft a pitch slide script introducing "The Fixer" physical service model
+
+Im in the World Developer Portal and it's telling me to set up MPC or build in the dashboard. What do I do?
+
+When a hackathon platform or developer portal prompts you with "MPC vs. Dashboard", it is asking you to choose your Authentication and Wallet Infrastructure Layer.
+
+Because your project, Satoshi’s ParaBox, handles high-security messaging and storage, you need a way to create an on-chain identity/wallet for the user right when they verify themselves.
+
+Here is exactly what that choice means and the route you should take to keep moving fast:
+
+🚀 Choose: "Build in the Dashboard" (Highly Recommended)
+For a hackathon MVP, do not select the MPC track.
+
+Why you should skip MPC right now:
+MPC (Multi-Party Computation) setup is for advanced, enterprise-grade key management. It requires you to configure independent node committees or utilize complex SDK integrations to split and manage raw private cryptographic keys. Trying to build an MPC infrastructure from scratch over a weekend will consume 90% of your hacking time and leave you with no working frontend.
+
+Why you should choose Dashboard:
+"Build in the Dashboard" means you are using World's hosted infrastructure (cloud actions) and standard Web3 connection widgets (like IDKit or standard WalletConnect providers).
+
+It gives you an instant, user-friendly UI component.
+
+It lets you configure your staging environment, generate your verification QR codes, and track success logs entirely through their web interface.
+
+It easily hands off the verification data to your frontend so you can immediately route it to NameStone or Hedera.
+
+Your Exact Next Moves in the Dashboard:
+Once you click "Build in the Dashboard", do these three things to clear Step 1:
+
+Create an App: Name your project Satoshi's ParaBox.
+
+Create an Action: Look for the "Actions" tab and create a new one. Name it something like user-login. Set the action type to Cloud.
+
+Copy your Credentials: The dashboard will generate an App ID (usually looks like app_xxxx...) and an Action ID (e.g., user-login). Grab both of these—you will drop them directly into your frontend code to initialize the login popup.
+
+Once you have those IDs copied, your portal config is done, and you are ready to start writing the code that triggers the popup!
+
+What would you like to do next?
+
+Create the Next.js frontend code boilerplate using these Dashboard IDs
+
+Set up the backend API router to catch the verified World ID response
+
+Map out the NameStone API script to run immediately after successful dashboard verification
+
+This is my first time hacking, no experience at all, so am I on the right track?
+
+You are 100% on the right track. In fact, by asking these questions before drowning in thousands of lines of code, you are already approaching this more strategically than many experienced developers do at their first hackathon.
+
+When you have no prior coding experience, a hackathon can feel incredibly intimidating. The secret to surviving—and winning—as a beginner is all about scoping and leveraging your strengths.
+
+Here is why you are in a great position and how to navigate the rest of your first hack:
+
+1. You Chose the Right Track ("Dashboard")
+Choosing "Build in the Dashboard" over the complex cryptographic MPC track was your first major win. Hackathons are won on working prototypes, not over-engineered backends. By using the dashboard, you are letting World handle the hardest math in the room, freeing you up to focus on making the pieces talk to each other.
+
+2. Your Non-Technical Ideas Are Your Secret Weapon
+Look back at your original handwritten notes for Satoshi’s ParaBox. You didn't just write down code protocols; you designed an entire service model:
+
+"The Fixer" (a physical representative to help non-tech-savvy users).
+
+Physical paper shredding and recycling to offset environmental impacts.
+
+At hackathons, judging panels aren't just composed of engineers; they include product managers, venture capitalists, and designers. Teams of pure coders often build technically brilliant tools that have zero real-world business value. Your focus on the human element and operational services gives your project a powerful narrative that judges remember.
+
+3. The "Beginner's Hackathon" Mindset
+Since this is your first time, adjust your definition of success:
+
+Don't try to build a flawless app. Build a "Hollywood set." If the button on the screen triggers the World ID popup, and successfully simulates a login, that is a massive victory.
+
+Use AI and templates shamelessly. Do not start with a blank text file. Ask for boilerplate templates, use sample code from the World ID and Hedera documentation, and piece them together like Legos.
+
+Lean on Mentors: Hackathons are packed with technical mentors from companies like World and Hedera whose literal job is to sit with you and fix your bugs. Show them your handwritten notes—they will love the clarity of your concept and will gladly help a first-time hacker write the code to connect the pieces.
+
+You have a clear concept, a defined technical stack, and you already cleared your first major architectural decision. Take a deep breath—you are doing great.
+
+What would you like to do next?
+
+Generate a beginner-friendly HTML and JavaScript template for the World ID login button
+
+Draft the exact script to use when explaining Satoshi's ParaBox to a hackathon mentor
+
+Create a checklist of what needs to be in my final hackathon submission portal
+
+It's asking me for App URL. What do I put?
+
+When a developer portal asks for an App URL (sometimes called a Redirect URI or Homepage URL) during setup, it's just looking for the web address where your project will live.
+
+Because you are working locally on your computer and haven't published your website to the internet yet, you can use your local development address.
+
+Here is exactly what to enter so you can bypass this step:
+
+What to Type In:
+For a standard modern frontend (like Next.js or Vite), type this exactly into the box:
+
+Plaintext
+http://localhost:3000
+Why this works:
+http://localhost tells the system that the application is running locally on your own machine.
+
+:3000 is the standard network port that development tools use to show your website before it goes live to the world. (If you happen to use Vite instead of Next.js, it might run on :5173, but 3000 is universally accepted by developer portals as a placeholder).
+
+⚠️ Important Hackathon Note:
+Don't worry—this setting isn't permanent! You can change this URL at any point during the weekend.
+
+Later on, if you decide to deploy your project to a free hosting site like Vercel or Netlify so the judges can click around on it, you will simply come back to this page in the World Developer Portal and swap http://localhost:3000 out for your live production link (e.g., [https://satoshis-parabox.vercel.app](https://satoshis-parabox.vercel.app)).
+
+For right now, type in the localhost link, hit save, and clear this roadblock!
+
+What would you like to do next?
+
+Generate a Next.js boilerplate project to start running localhost
+
+Create a list of free deployment platforms for hackathon projects
+
+Its saying it has to be a valid URL
+
+Ah, the World Developer Portal is being strict about security! It requires the https:// protocol (the secure web standard) and won't accept a raw localhost address in that specific field.
+
+Here are the two ways to easily bypass this validation error right now:
+
+Option 1: The Fast Hackathon Shortcut (Recommended)
+Since you are just building a prototype, you can give it a fake, valid public URL for now just to pass the system validation.
+
+Type this exactly into the box:
+
+Plaintext
+https://example.com
+Why this works: It satisfies the portal's requirement for a valid, secure URL (https://). Because you will be using the World ID Simulator on your local computer to test your code, the portal doesn't actually need to ping a real live app website yet. You can save your settings, get your App ID, and keep moving!
+
+Option 2: The Secure Localhost Formula
+If the portal requires a secure link but still lets you use a local testing address, you have to include the full protocol.
+
+Try typing this exactly:
+
+Plaintext
+https://localhost:3000
+(Note: If it still complains about the word "localhost", just fall back to Option 1 so you don't waste precious hacking time troubleshooting it. You can always change it later!)
+
+Put in https://example.com, hit save, and let's get you those App IDs!
+
+How do I use my App ID and Action ID in my project frontend?
+
+How does the World ID Simulator work for testing my local app?
+
+its asking to Enable App to run as Mini App. What do I select?
+
+Select No (or leave it toggled off).
+
+Why you should skip this:
+A Mini App is a highly specific type of application built to run natively inside the World App mobile ecosystem (similar to WeChat mini-programs or Telegram mini-apps).
+
+Building a Mini App requires you to use their specific miniapp-sdk, handle mobile-responsive canvas styling, and configure complex front-to-back messaging protocols so it looks right inside a mobile wallet.
+
+Since you are building a web-based MVP on your laptop for a hackathon demo, you want a standard, standalone web application. Keeping this setting off ensures the portal gives you standard web credentials (like the App ID and Action ID) that you can easily plug into a normal browser project.
+
+Turn it off, hit save/submit, and you are officially done with the portal setup!
+
+next step its asking Enable World ID 4.0
+
+Enable the next generation of World ID with improved privacy, multi-device support, and enhanced security. Managed or self managed?
+
+Select Managed.
+
+What this means:
+Managed: Worldcoin handles the heavy lifting of user credential verification, cryptographic key rotations, and zero-knowledge proof (ZKP) processing securely on their servers. They return a simple, clean verification payload directly to your application dashboard.
+
+Self-Managed: You would be responsible for self-hosting the cryptographic validation nodes, managing your own verification keys, and manually handling the mathematical proofs generated by the World ID system.
+
+Why you should pick Managed:
+Because this is your first hackathon and your first time building this type of project, you want to let the protocol handle the complex infrastructure. Selecting Managed keeps you aligned with the "Dashboard" track you just selected. It ensures that your setup remains incredibly simple, leaving you with just a clean App ID and Action ID to use in your local project code.
+
+Click Managed, finish the sequence, and celebrate—your backend configuration portal is completely set up!
+
+next step is Configure Signer Key
+
+Your signer key is used to sign proof requests. Choose how you want to set up your key: do I generate new key or use existing key?
+
+Select Generate new key.
+
+Why you should choose this:
+Generate new key: The World Developer Portal will instantly create a brand-new, secure cryptographic key pair right inside your browser session for this specific project. It takes one click, requires no setup, and is exactly what you want for a new hackathon prototype.
+
+Use existing key: This option is only for developers who already have a pre-existing public/private key pair saved on their computer from a previous World ID project that they specifically want to reuse.
+
+What to do next:
+Click Generate new key.
+
+The portal will likely generate the key and may show you a string of characters or ask you to download a small text file containing your public/private key configuration.
+
+Save it: If it gives you a file to download or a secret string to copy, save it in a secure note or a folder on your desktop labeled parabox-credentials. You might need to paste it into your local code environment later so your app can securely sign requests.
+
+Once you click generate and save any provided keys, your portal configuration should be 100% complete!
+
+What would you like to do next?
+
+Generate a file structure template for storing hackathon API keys securely
+
+Draft a React component snippet that initializes World ID Kit using the generated keys
+
+Outline the step-by-step terminal commands to install World ID dependencies
+
+im in the create a new action step. What is identifier?
+
+The identifier (sometimes called an Action ID or External Nullifier) is a unique, human-readable name you give to this specific user interaction.
+
+Think of it as the "slug" or the label for this specific button in your app.
+
+Here is exactly what you need to know to fill it out:
+
+What to type in:
+Type something simple, lowercase, and hyphenated. For your project, use:
+
+Plaintext
+user-login
+(Or verify-access, login-parabox—anything short and clean works).
+
+Why the identifier matters:
+In World ID, the identifier ensures that a user's anonymity is preserved across different actions. When a user scans their QR code, World ID uses this identifier to generate a unique cryptographic proof.
+
+This means:
+
+If a user logs into your app using the user-login action, they get a specific anonymous user ID.
+
+If you create a second action later called delete-data, the system will generate a completely different anonymous ID for that same user.
+
+This prevents anyone from tracking a user’s behavior across different parts of your application, which fits perfectly into the high-privacy narrative of Satoshi’s ParaBox!
+
+What to do next:
+Type user-login into the identifier box.
+
+Hit Create Action (or Save).
+
+Look at your dashboard screen. You should now see two distinct strings of text: An App ID (starts with app_) and your Action ID (the user-login you just typed).
+
+Copy both of these down. You are officially done with the browser portal setup and have all the credentials needed to start building the frontend!
+
+What would you like to do next?
+
+Create a Next.js boilerplate template using the App ID and Action ID
+
+Outline the local project setup terminal commands for a total beginner
+
+Draft a pitch deck slide text explaining the privacy architecture
+
+What should I put in the description box
+
+For the description box in the action setup, you want a short, clear statement that explains to the user exactly why they are scanning their QR code.
+
+When a user opens their World App to log into your platform, this description is the actual text that will pop up on their physical phone screen. It builds trust and lets them know their data is safe.
+
+Type this exactly into the description box:
+
+Plaintext
+Securely verify your humanity to unlock your private Satoshi's ParaBox dashboard.
+Why this description works perfectly:
+Clear Purpose: It immediately tells the user why they are scanning (to verify they are a real human, not a bot).
+
+Reinforces Value: It highlights the benefit (unlocking their private, secure dashboard).
+
+Builds Trust: Using words like "securely" and "private" aligns with the high-security, HIPAA-level narrative of your project stack.
+
+Once you type that in, you are completely done creating your action! Your screen should refresh and give you the final credentials you need to start building.
+
+What would you like to do next?
+
+Create a Next.js boilerplate template using the App ID and Action ID
+
+Provide terminal commands to install World ID dependencies
+
+Draft a pitch deck slide text explaining the privacy architecture
+
+I got this message. "RP registration is not active. Please ensure your app is properly registered."
+
+This is a common error message when setting up World ID for the first time, and it is usually caused by a slight desync between your local code and the developer portal settings.
+
+"RP" stands for Relying Party, which is the cryptographic term for your application. This error simply means World ID's servers are rejecting the login request because the configuration IDs in your code don't perfectly match the active Action you just created in the dashboard.
+
+Here is how to fix it in two minutes:
+
+1. Check your Environment Mode (Staging vs. Production)
+Because you selected Managed and Generate New Key, your action defaults to a specific environment.
+
+If you are testing your code using the World ID Simulator on your computer, your code must be set to staging mode.
+
+If your code is accidentally trying to point to production (live mainnet) while your action is still in staging/testing mode, the portal will throw this error because the live production registry isn't active for your app yet.
+
+The Fix: Look at your frontend initialization code (where you put the IDKit widget) and ensure the environment parameter is explicitly set to environment="staging" or is_staging={true}.
+
+2. Verify the App ID Prefix
+Double-check how you pasted your App ID into your code.
+
+In the Developer Portal, your App ID might look like app_staging_12345... or app_12345....
+
+The Fix: Make sure you copied the entire string, including the app_ prefix. If your code is missing the prefix or missing a character at the end, World's servers won't recognize your "Relying Party" registration.
+
+3. Match the Action Identifier Verbatim
+Go back to the Action tab in your portal and look at the Identifier string you created (where we typed user-login).
+
+The Fix: Make sure your code is calling action="user-login" exactly. If there is a typo in your code (like user_login with an underscore instead of a hyphen), the registration check will fail.
+
+Summary Checklist to review in your code:
+JavaScript
+// Example IDKit configuration check
+app_id="app_staging_xxxxxx..." // Must match portal exactly (including app_)
+action="user-login"            // Must match your identifier exactly
+environment="staging"          // Must be staging if using the simulator
+Double-check those three strings in your project files, save, restart your local server, and try clicking the button again!
+
+It sent me back to create new action. how do I get to set to staging mode?
+
+You don't configure "staging mode" inside the action creation settings itself. The portal is dropping you back into the "Create Action" screen because you still need to hit Save or Create to finish setting up the action identifier (user-login) and description we talked about.
+
+Once you create the action, staging mode is handled automatically by the portal, and you enforce it inside your local code.
+
+Here is how to get past this screen and see your staging environment:
+
+Step 1: Complete the Action Creation
+In the fields on your current screen, make sure you have:
+
+Identifier: user-login
+
+Description: Securely verify your humanity to unlock your private Satoshi's ParaBox dashboard.
+
+Click Create Action or Save at the bottom of the page.
+
+Step 2: Locate Your Staging Environment
+Once you hit save, the screen will refresh to your main Application Dashboard. Look at the top of your dashboard:
+
+You will see a toggle or a clear layout dividing your app into Staging and Production.
+
+Because you are a new app using World ID 4.0, your app defaults to Staging automatically so you can test it for free.
+
+You will see your App ID (which will look like app_staging_...) and your Action ID (user-login).
+
+Step 3: Mirror Staging in Your Local App Code
+To make sure your code communicates with World's staging servers (and allows you to use the World ID Simulator instead of your real phone), you just configure a single parameter in your code files.
+
+When you drop the login button widget into your web app, you will pass "staging" into the environment field like this:
+
+JavaScript
+import { IDKitWidget } from '@worldcoin/idkit'
+
+<IDKitWidget
+    app_id="app_staging_your_id_here" // From your dashboard
+    action="user-login"               // The identifier you just made
+    environment="staging"             // <--- THIS triggers staging mode!
+    onSuccess={handleSuccess}
+>
+    {({ open }) => <button onClick={open}>Verify with World ID</button>}
+</IDKitWidget>
+Finish creating the action, grab that app_staging_ ID from your dashboard, and you are officially done with the portal setup!
+
+What would you like to do next?
+
+Create a local text file to store these credentials safely
+
+Show me how to open and use the World ID Simulator next
+
+Outline the absolute next milestone for building the frontend
+
+Where do I find the IDKit widget
+
+The IDKit widget isn't something you download from a website or click on in the developer portal dashboard. Instead, it lives in a code package that you install directly into your project's code files.  
+GitHub
+
+Because it is an open-source code library, you pull it out of the cloud and drop it into your website app using your computer's terminal.
+
+Here are the three steps to find it, pull it down, and see it on your screen:
+
+Step 1: Open Your App Folder in a Terminal
+Open your computer's terminal (or the command line inside your code editor, like VS Code) and make sure you are inside the folder where your hackathon website project lives.
+
+Step 2: Install the Package
+Run this exact command in your terminal to fetch the widget from the official JavaScript registry (npm):  
+GitHub
+
+Bash
+npm install @worldcoin/idkit
+(If your team is using a different package manager, you might type yarn add @worldcoin/idkit or pnpm add @worldcoin/idkit instead).  
+GitHub
+
+Step 3: Import the Widget into Your Code File
+Now that the package is downloaded into your project, you can use it. At the very top of your main web page file (like index.js or page.tsx), add this line to grab the widget code:  
+GitHub
+
+JavaScript
+import { IDKitWidget } from '@worldcoin/idkit'
+Once that's done, you can drop the <IDKitWidget> tag right into your HTML interface code, plug in the App ID and Action ID you just created, and the popup will work!  
+GitHub
+
+💡 Quick Cheat Code for Absolute Beginners
+If you don't even have a project folder or a code editor set up yet and just want to see the widget pop up instantly in your browser to test it, you can use a single HTML file template.
+
+Create a blank file on your desktop named index.html, paste this code inside it, and double-click it to open it in Chrome:
+
+HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Satoshi's ParaBox Test</title>
+</head>
+<body>
+    <h1>Satoshi's ParaBox Prototype</h1>
+    
+    <!-- This script tags pulls the IDKit widget directly from a CDN link without installing anything -->
+    <script type="module">
+        import worldcoinidkit from 'https://cdn.jsdelivr.net/npm/@worldcoin/idkit@4.1.4/+esm'
+        
+        // This initializes the widget library on your plain HTML page
+        console.log("IDKit is ready to go!", worldcoinidkit);
+    </script>
+</body>
+</html>
+  
+GitHub
+this is my APP ID. Why can't I move forward to create action?
+
+If you are seeing your App ID on your screen right now but you feel stuck or can't figure out how to "move forward," it is likely because of how the developer portal layout is designed.
+
+In World ID 4.0, the App ID and the Action are two separate things. The App ID is the parent container, and the Action is the specific step inside it.
+
+Here is exactly how to navigate past this screen so you can create your action:
+
+🧭 How to Find the "Create Action" Button
+Once you have an App ID, look closely at your portal dashboard. You are likely on the app's main overview page.
+
+Look at the Left Sidebar: Look for a menu tab labeled "Actions" or "Sign-in / Actions". Click that.
+
+Find the Button: Once you click that tab, look toward the top right or the center of the screen for a bright button that says "+ Create Action" or "New Action".
+
+Fill It In: Click that button, and that is where you will type in the user-login identifier and the description we talked about earlier.
+
+🛑 Are You Seeing a Error/Greyed-Out Button instead?
+If you see the button but it won't let you click it, check for these two common portal roadblocks:
+
+Did you copy your keys? If you just generated a new signer key in the previous step, the portal sometimes freezes or locks the next step until you click a checkbox that says something like "I have saved my private key configuration" or until you actually download the key file.
+
+Verify the Environment: Make sure you are looking at the Staging tab of your application, not the Production tab. The Production tab will lock you out of creating actions until you complete a full team verification, whereas the Staging tab lets you create actions instantly.
+
+Take a look at your screen, click on that Actions tab in the menu, and see if that unblocks you!
+
+I finally set up the action. What is the next step
+
+Fantastic! Now that your developer portal is fully configured with your app_staging_ ID and your user-login action identifier, the portal setup is completely finished.
+
+The absolute next step is to bring your website app folder to life on your computer so you have a home for your IDKit login button.
+
+Since you have zero prior coding experience, we are going to use a terminal command shortcut that creates a fully built, pre-configured website template for you in under two minutes.
+
+The Next Step: Spin Up Your Web App
+Instead of creating files by hand, you will run a universal script that creates a modern web application structure (Next.js) for you automatically.
+
+1. Open Your Computer's Terminal
+On a Mac: Press Command + Space, type "Terminal", and hit Enter.
+
+On Windows: Press the Windows Key, type "PowerShell" or "Command Prompt", and hit Enter.
+
+2. Run the App Generator Command
+Paste this exact line into your terminal window and hit Enter:
+
+Bash
+npx create-next-app@latest satoshis-parabox --typescript --eslint --tailwind --src-dir --app --import-alias "@/*"
+3. Answer the Prompts
+The terminal will ask you a couple of quick permission questions to build the folder:
+
+It might say: Need to install the following packages: create-next-app@latest. Proceed? (y) → Type y and hit Enter.
+
+Once it starts, you will see a wave of text installing everything. This is completely normal—it is downloading the standard modern web lego pieces for your project.
+
+🏁 How to Know You Succeeded
+When the terminal stops moving and says something like Success! Created satoshis-parabox, run these final two commands to enter your folder and start your local live server:
+
+Bash
+cd satoshis-parabox
+npm run dev
+Look at the terminal output. It will say Ready in... and show you a local web address. Open your internet browser (Chrome, Safari, etc.) and go to:
+http://localhost:3000
+
+If you see a default welcome screen, your hackathon project officially exists on your local machine. You are ready to open this folder in your code editor and drop in the World ID code package we discussed!
+
+What would you like to do next?
+
+Generate the exact code snippet to paste into this new app to display the login button
+
+Show me how to install the World ID package into this newly created folder
+
+Explain how to open this newly created project folder in Visual Studio Code
+
+It says the dev server is up and running to ttp://localhost:3000 but it says Safari cannot connect to server
+
+Don't panic! This is a classic "first-time developer" hurdle, and your server is perfectly fine.
+
+Safari is being overly protective. Sometimes macOS and Safari get confused trying to map the word localhost internally, or it is trying to force an encrypted https:// connection on a local test environment that is only running standard http://.
+
+Here are three quick ways to fix this, ranked from the absolute easiest to the most robust:
+
+Fix 1: Use Chrome or Firefox instead (The Hackathon Favorite)
+Most web developers avoid Safari for local testing because of strict network quirks just like this.
+
+Download and open Google Chrome or Brave.
+
+Paste http://localhost:3000 into the address bar.
+
+9 times out of 10, it will open up instantly. Chrome is much more forgiving with local developer ports.
+
+Fix 2: Swap localhost for the Loopback IP
+If you want to keep using Safari, you can force it to bypass its name-resolution check by typing the raw computer network numbers instead of the word "localhost".
+
+Delete what's in your Safari address bar and type this exactly:
+
+Plaintext
+http://127.0.0.1:3000
+Why this works: 127.0.0.1 is the universal IP address that literally means "my own computer" (the loopback address). Safari can't misinterpret it, so it directly targets your Next.js project.
+
+Fix 3: Check for an accidental s
+Make sure Safari didn't automatically change your text to https://localhost:3000 (notice the s). Local developer environments do not have SSL security certificates built-in by default, so if Safari forces an https connection, it will completely block the page. Ensure it says strictly http://.
+
+Try Fix 1 or Fix 2 right now, and you should see that default Next.js starter page pop up perfectly!
+
+What would you like to do next?
+
+Install the World ID kit code into my running app
+
+Open the project folder inside a code editor like VS Code
+
+Finally got the server running. I got a link that says "To get started, edit the page.tsx file." What is my next step?
+
+Boom! You have officially crossed the bridge from "person with an idea" to "developer with a running local application." Getting that server up on your first try is a massive win.
+
+Your next step is to replace that default starter screen with your World ID login button.
+
+To do this, we need to install the World ID package into your project folder and then drop the code into that exact page.tsx file your screen is telling you about.
+
+Step 1: Install the World ID Library
+Go back to your terminal window (where your server is currently running).
+
+Stop the server temporarily by pressing Control + C on your keyboard. Your terminal prompt should reappear.
+
+Type this exact command to install the official World ID connection package and hit Enter:
+
+npm install @worldcoin/idkit
+
+3. Wait a few seconds for it to finish downloading the files.
+
+---
+
+## Step 2: Open and Edit `page.tsx`
+
+Open your project folder in your code editor (like Visual Studio Code). Look at the left sidebar file menu and follow this exact path to find the file:
+`src` $\rightarrow$ `app` $\rightarrow$ `page.tsx` *(Note: If you don't see a `src` folder, it will just be `app` $\rightarrow$ `page.tsx`)*.
+
+Click it to open it. Delete **everything** currently inside that file, and paste this fresh, clean code template in its place:
+
+```tsx
+'use client';
+
+import { IDKitWidget, VerificationLevel } from '@worldcoin/idkit';
+
+export default function Home() {
+  const handleVerify = async (proof: any) => {
+    console.log('Proof received from World ID Simulator:', proof);
+    // This is where your backend will eventually verify the proof
+  };
+
+  const onSuccess = () => {
+    alert("Successfully verified with World ID! Welcome to Satoshi's ParaBox.");
+  };
+
+  return (
+    <main style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      alignItems: 'center', 
+      justifyContent: 'center', 
+      height: '100vh',
+      fontFamily: 'sans-serif',
+      backgroundColor: '#111',
+      color: '#fff'
+    }}>
+      <h1 style={{ marginBottom: '8px' }}>Satoshi's ParaBox</h1>
+      <p style={{ color: '#888', marginBottom: '24px' }}>Secure Identity & Data Vault</p>
+
+      <IDKitWidget
+        app_id="app_staging_YOUR_APP_ID_HERE" // Paste your app_staging_ ID here verbatim
+        action="user-login"                     // Your action identifier verbatim
+        false={false} 
+        verification_level={VerificationLevel.Device}
+        handleVerify={handleVerify}
+        onSuccess={onSuccess}
+      >
+        {({ open }) => (
+          <button 
+            onClick={open}
+            style={{
+              padding: '12px 24px',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              backgroundColor: '#fff',
+              color: '#000',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer'
+            }}
+          >
+            Verify with World ID
+          </button>
+        )}
+      </IDKitWidget>
+    </main>
+  );
+}
+Step 3: Plug in Your Credentials & Restart
+Look closely at line 23 in the code above: app_id="app_staging_YOUR_APP_ID_HERE". Replace that placeholder text with the actual App ID you copied from your developer portal.
+
+Save the file (Command + S on Mac or Ctrl + S on Windows).
+
+Go back to your terminal, turn your server back on by typing:
+
+npm run dev
+
+4. Refresh your browser page at `http://localhost:3000` (or `[http://127.0.0.1:3000](http://127.0.0.1:3000)`).
+
+You should now see a dark, sleek landing page for **Satoshi's ParaBox** with a clean button that says **"Verify with World ID"**. Click it, and watch your configuration come to life!
+
+---
+<ElicitationsGroup message="What would you like to do next?">
+<Elicitation label="Explain how to use the World ID Simulator to test this new button" query="Explain how to open and use the official World ID Simulator to test my new localhost button" />
+<Elicitation label="Create a mock success state that displays the dashboard view after verification" query="Modify the Next.js page.tsx code to toggle to a mock dashboard view once onSuccess triggers" />
+<Elicitation label="Outline Step 2: Preparing the Walrus storage file upload component" query="What is the easiest way to add a file upload input field for Walrus storage to this React page?" />
+</ElicitationsGroup>
+I got "zsh: command not found: npm"
+
+Ah, you ran into the classic "chicken-and-egg" issue of web development!
+
+When you generated the template project using npx create-next-app, your computer used a temporary, cloud-cached version of the installer tool (npx). But when we tried to run npm install, your Mac realized it doesn't actually have Node.js and npm permanently installed on its system hard drive.
+
+zsh: command not found: npm just means your computer's terminal doesn't know what npm is yet. Let's fix that right now.
+
+🛠️ The Fix: Install Node.js & npm
+Since you are on a Mac, the absolute cleanest, most error-free way for a beginner to get npm is to use the official installer wizard.
+
+Go to the official website: nodejs.org
+
+You will see two big download buttons. Click the one labeled LTS (Long Term Support). (This is the stable version that 99% of developers use).
+
+It will download a file ending in .pkg to your Downloads folder.
+
+Double-click that downloaded file and follow the standard installation prompts (it will ask for your Mac's lock screen password to authorize the installation).  
+YouStable
+
+🔄 Refresh Your Terminal
+Once the installer says "Installation Successful", close your current terminal window completely.
+
+Terminal windows don't automatically know when new software is installed, so closing it and opening a fresh one forces it to reload.
+
+Open a brand-new Terminal window.
+
+Type these two verification commands to make sure your Mac sees them now:
+
+Bash
+node -v
+npm -v
+If it prints out two version numbers (like v22.x.x and 10.x.x), you are golden!
+
+🏎️ Jump Back In
+Now that your machine natively understands npm, run these commands to get right back to where we left off:
+
+Bash
+cd satoshis-parabox
+npm install @worldcoin/idkit
+npm run dev
+Your server will spin right back up to http://localhost:3000, and you'll be fully ready to test that "Verify with World ID" button!
+
+To see a live walkthrough of this exact installation wizard on macOS, you can watch this Mac Node.js Setup Tutorial. It visually shows you which prompts to click and how to verify the installation via the terminal.
+
+How to Install Node JS on Mac 2026 Tutorial - YouTube
+United Top Tech · 230 views
+
+
+Google Privacy PolicyOpens in a new window
+Google Terms of ServiceOpens in a new window
+Your privacy & Gemini AppsOpens in a new window
+Gemini may display inaccurate info, including about people, so double-check its responses.
+
+
