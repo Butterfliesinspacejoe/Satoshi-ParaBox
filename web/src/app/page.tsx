@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { IDKitWidget, VerificationLevel } from '@worldcoin/idkit';
+import { IDKitRequestWidget, proofOfHuman } from '@worldcoin/idkit';
 import { 
   Shield, 
   Lock, 
@@ -53,7 +53,7 @@ interface HcsLog {
 export default function SatoshiParaBox() {
   // Config
   const [config, setConfig] = useState({
-    worldIdAppId: 'app_staging_satoshis_parabox',
+    worldIdAppId: 'app_57d38506bb2953dc8219d826cd3dedd6',
     worldIdAction: 'user-login',
     hederaTopicId: '0.0.9224062',
     walrusPublisher: 'https://publisher.walrus-testnet.walrus.space',
@@ -70,6 +70,8 @@ export default function SatoshiParaBox() {
   const [showKey, setShowKey] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
   const [showIdkitModal, setShowIdkitModal] = useState(false);
+  const [rpContext, setRpContext] = useState<any>(null);
+  const [isWidgetOpen, setIsWidgetOpen] = useState(false);
   
   // Tab Navigation
   const [activeTab, setActiveTab] = useState<'vault' | 'logs' | 'fixer'>('vault');
@@ -263,6 +265,30 @@ export default function SatoshiParaBox() {
 
     fetchHcsMessages();
   }, [config.hederaTopicId]);
+
+  // Load World ID Relying Party Context signature on mount
+  useEffect(() => {
+    const fetchRpContext = async () => {
+      try {
+        logToConsole('World ID: Fetching Relying Party (RP) signature context from backend...');
+        const response = await fetch('/api/world-id/rp-context');
+        if (!response.ok) {
+          throw new Error('Failed to reach signature endpoint.');
+        }
+        const data = await response.json();
+        if (data.success && data.rp_context) {
+          setRpContext(data.rp_context);
+          logToConsole('World ID: RP signature context loaded successfully. Real World App scanning enabled.');
+        } else {
+          logToConsole(`World ID: RP signature not configured (${data.message || 'missing signing key'}). Simulator mode active.`);
+        }
+      } catch (err: any) {
+        logToConsole(`World ID: Signature loading error: ${err.message}. Simulator mode active.`);
+      }
+    };
+
+    fetchRpContext();
+  }, []);
 
   const handleLockout = () => {
     if (timerRef.current) clearInterval(timerRef.current);
@@ -539,20 +565,42 @@ export default function SatoshiParaBox() {
 
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
-                  <IDKitWidget
-                    app_id={config.worldIdAppId as `app_${string}`}
-                    action={config.worldIdAction}
-                    onSuccess={handleWorldIdSuccess}
-                    handleVerify={handleWorldIdVerify}
-                    verification_level={VerificationLevel.Device}
-                  >
-                    {({ open }) => (
-                      <button className="btn-primary" onClick={open} style={{ fontSize: '1.05rem', padding: '14px 32px' }}>
+                  {rpContext ? (
+                    <>
+                      <button 
+                        className="btn-primary" 
+                        onClick={() => setIsWidgetOpen(true)} 
+                        style={{ fontSize: '1.05rem', padding: '14px 32px' }}
+                      >
                         <ShieldCheck style={{ width: '1.35rem', height: '1.35rem' }} />
                         Verify with World ID (Staging)
                       </button>
-                    )}
-                  </IDKitWidget>
+                      
+                      <IDKitRequestWidget
+                        app_id={config.worldIdAppId as `app_${string}`}
+                        action={config.worldIdAction}
+                        onSuccess={handleWorldIdSuccess}
+                        handleVerify={handleWorldIdVerify}
+                        rp_context={rpContext}
+                        open={isWidgetOpen}
+                        onOpenChange={setIsWidgetOpen}
+                        allow_legacy_proofs={false}
+                        preset={proofOfHuman()}
+                      />
+                    </>
+                  ) : (
+                    <button 
+                      className="btn-primary" 
+                      onClick={() => {
+                        logToConsole("World ID: Staging signature missing. Please check that WORLD_SIGNING_KEY is added to .env.local.");
+                        alert("World ID Staging Configuration Error:\n\nTo use the real World App staging verification, you need to configure your WORLD_SIGNING_KEY in your .env.local file.\n\nPlease use 'Simulate Verification' instead for testing.");
+                      }} 
+                      style={{ fontSize: '1.05rem', padding: '14px 32px', opacity: 0.6 }}
+                    >
+                      <ShieldCheck style={{ width: '1.35rem', height: '1.35rem' }} />
+                      Verify with World ID (Staging)
+                    </button>
+                  )}
                   
                   <button className="btn-secondary" onClick={() => setShowIdkitModal(true)} style={{ fontSize: '1.05rem', padding: '14px 32px' }}>
                     Simulate Verification
