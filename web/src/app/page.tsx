@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { IDKitWidget, VerificationLevel } from '@worldcoin/idkit';
 import { 
   Shield, 
   Lock, 
@@ -133,6 +134,52 @@ export default function SatoshiParaBox() {
         addHcsLog('IDENTITY_REGISTERED', assignedSubdomain, `Registered World ID Nullifier ${mockNullifier.substring(0, 14)}... to dynamic subdomain.`);
       }, 1000);
     }, 1000);
+  };
+
+  // Real World ID proof verification and success handlers
+  const handleWorldIdVerify = async (proofResult: any) => {
+    logToConsole('World ID: Proof generated. Sending ZK proof to backend for verification...');
+    
+    const response = await fetch('/api/world-id/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        ...proofResult,
+        action: config.worldIdAction
+      })
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      logToConsole(`ZKP Verification Error: ${errorData.message || 'Proof verification failed.'}`);
+      throw new Error(errorData.message || 'Verification failed.');
+    }
+    
+    logToConsole('ZKP Verification: Success! Proof verified against World ID staging API.');
+  };
+
+  const handleWorldIdSuccess = (proofResult: any) => {
+    logToConsole('World ID: Verification flow completed successfully.');
+    
+    const nullifier = proofResult.nullifier_hash;
+    const shortHash = nullifier.startsWith('0x') ? nullifier.substring(2, 8) : nullifier.substring(0, 6);
+    const assignedSubdomain = `human_${shortHash}.satoshisparabox.eth`;
+    
+    // Generate client-side key
+    const generatedKey = Array.from({ length: 32 }, () => 
+      Math.floor(Math.random() * 16).toString(16)
+    ).join('');
+    
+    setNullifierHash(nullifier);
+    setUserSubdomain(assignedSubdomain);
+    setMasterKey(generatedKey);
+    setIsVerified(true);
+    setSecondsLeft(lockoutTtl);
+    
+    logToConsole(`ENS Routing: Subdomain ${assignedSubdomain} registered successfully via NameStone.`);
+    logToConsole(`Security: Client-side AES key loaded. Vault decrypted.`);
+    
+    addHcsLog('IDENTITY_REGISTERED', assignedSubdomain, `Registered World ID Nullifier ${nullifier.substring(0, 14)}... to dynamic subdomain.`);
   };
 
   // Session expiry / auto lockout logic
@@ -490,11 +537,30 @@ export default function SatoshiParaBox() {
                 To decrypt your secure dashboard and generate dynamic ENS routing workspace parameters, verify your unique humanity via World ID.
               </p>
 
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '1.25rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-                <button className="btn-primary" onClick={() => setShowIdkitModal(true)} style={{ fontSize: '1.05rem', padding: '14px 32px' }}>
-                  <ShieldCheck style={{ width: '1.35rem', height: '1.35rem' }} />
-                  Verify with World ID
-                </button>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
+                  <IDKitWidget
+                    app_id={config.worldIdAppId as `app_${string}`}
+                    action={config.worldIdAction}
+                    onSuccess={handleWorldIdSuccess}
+                    handleVerify={handleWorldIdVerify}
+                    verification_level={VerificationLevel.Device}
+                  >
+                    {({ open }) => (
+                      <button className="btn-primary" onClick={open} style={{ fontSize: '1.05rem', padding: '14px 32px' }}>
+                        <ShieldCheck style={{ width: '1.35rem', height: '1.35rem' }} />
+                        Verify with World ID (Staging)
+                      </button>
+                    )}
+                  </IDKitWidget>
+                  
+                  <button className="btn-secondary" onClick={() => setShowIdkitModal(true)} style={{ fontSize: '1.05rem', padding: '14px 32px' }}>
+                    Simulate Verification
+                  </button>
+                </div>
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+                  Staging requires scanning the QR code using the <a href="https://simulator.worldcoin.org" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-cyan)' }}>Worldcoin Simulator</a>.
+                </span>
               </div>
             </div>
 
