@@ -278,6 +278,13 @@ export default function SatoshiParaBox() {
         const data = await response.json();
         if (data.success && data.rp_context) {
           setRpContext(data.rp_context);
+          if (data.app_id) {
+            setConfig((prev) => ({
+              ...prev,
+              worldIdAppId: data.app_id,
+              worldIdAction: data.action || prev.worldIdAction
+            }));
+          }
           logToConsole('World ID: RP signature context loaded successfully. Real World App scanning enabled.');
         } else {
           logToConsole(`World ID: RP signature not configured (${data.message || 'missing signing key'}). Simulator mode active.`);
@@ -581,6 +588,9 @@ export default function SatoshiParaBox() {
                         action={config.worldIdAction}
                         onSuccess={handleWorldIdSuccess}
                         handleVerify={handleWorldIdVerify}
+                        onError={(errorCode) => {
+                          logToConsole(`World ID Error: Verification failed with code ${errorCode}`);
+                        }}
                         rp_context={rpContext}
                         open={isWidgetOpen}
                         onOpenChange={setIsWidgetOpen}

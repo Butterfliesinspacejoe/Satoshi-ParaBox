@@ -14,13 +14,14 @@ export async function POST(request: Request) {
       signal
     } = body;
 
-    const appId = process.env.WORLD_ID_APP_ID || 'app_57d38506bb2953dc8219d826cd3dedd6';
+    const rpId = process.env.WORLD_ID_RP_ID || 'rp_b12bc3aeda593eae';
     const isProduction = process.env.WORLD_ID_ENVIRONMENT === 'production';
-    const verifyUrl = isProduction
-      ? `https://developer.worldcoin.org/api/v2/verify/${appId}`
-      : `https://staging-developer.worldcoin.org/api/v2/verify/${appId}`;
+    const baseUrl = isProduction
+      ? 'https://developer.world.org'
+      : 'https://staging-developer.worldcoin.org';
+    const verifyUrl = `${baseUrl}/api/v4/verify/${rpId}`;
 
-    console.log(`World ID Verification: Verifying ZK proof against v2 API (${isProduction ? 'Production' : 'Staging'}) for App ID: ${appId}`);
+    console.log(`World ID Verification: Verifying ZK proof against v4 API (${isProduction ? 'Production' : 'Staging'}) for RP ID: ${rpId}`);
 
     const response = await fetch(verifyUrl, {
       method: 'POST',
@@ -38,7 +39,7 @@ export async function POST(request: Request) {
     });
 
     const data = await response.json();
-    console.log('World ID v2 Verification Response:', data);
+    console.log('World ID v4 Verification Response:', data);
 
     if (response.ok) {
       return NextResponse.json({
