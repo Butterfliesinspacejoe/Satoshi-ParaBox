@@ -4,27 +4,41 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     
-    // Support either forwarding the raw response object, or extracting fields
-    const idkitResponse = body.idkitResponse || body;
-    const rpId = body.rp_id || process.env.WORLD_ID_RP_ID || process.env.WORLD_ID_APP_ID || 'app_57d38506bb2953dc8219d826cd3dedd6';
+    const {
+      merkle_root,
+      nullifier_hash,
+      proof,
+      verification_level,
+      credential_type,
+      action,
+      signal
+    } = body;
 
+    const appId = process.env.WORLD_ID_APP_ID || 'app_57d38506bb2953dc8219d826cd3dedd6';
     const isProduction = process.env.WORLD_ID_ENVIRONMENT === 'production';
     const verifyUrl = isProduction
-      ? `https://developer.world.org/api/v4/verify/${rpId}`
-      : `https://staging-developer.worldcoin.org/api/v4/verify/${rpId}`;
+      ? `https://developer.worldcoin.org/api/v2/verify/${appId}`
+      : `https://staging-developer.worldcoin.org/api/v2/verify/${appId}`;
 
-    console.log(`World ID Verification: Verifying ZK proof against v4 API (${isProduction ? 'Production' : 'Staging'}) for RP ID: ${rpId}`);
+    console.log(`World ID Verification: Verifying ZK proof against v2 API (${isProduction ? 'Production' : 'Staging'}) for App ID: ${appId}`);
 
     const response = await fetch(verifyUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(idkitResponse),
+      body: JSON.stringify({
+        merkle_root,
+        nullifier_hash,
+        proof,
+        verification_level: verification_level || credential_type || 'orb',
+        action: action || process.env.WORLD_ID_ACTION || 'user-login',
+        signal: signal || ''
+      }),
     });
 
     const data = await response.json();
-    console.log('World ID v4 Verification Response:', data);
+    console.log('World ID v2 Verification Response:', data);
 
     if (response.ok) {
       return NextResponse.json({
