@@ -586,6 +586,7 @@ export default function SatoshiParaBox() {
                         onOpenChange={setIsWidgetOpen}
                         allow_legacy_proofs={false}
                         preset={proofOfHuman()}
+                        environment="staging"
                       />
                     </>
                   ) : (
