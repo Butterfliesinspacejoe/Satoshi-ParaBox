@@ -1,0 +1,192 @@
+/* Custom CSS for Satoshi's ParaBox */
+
+:root {
+  --bg-gradient-start: #0a0c10;
+  --bg-gradient-end: #030406;
+  --card-bg: rgba(18, 22, 32, 0.65);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --accent-cyan: #00f2fe;
+  --accent-blue: #4facfe;
+  --accent-purple: #8a2be2;
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: radial-gradient(circle at 50% 0%, #151e30 0%, var(--bg-gradient-end) 70%), var(--bg-gradient-start);
+  color: var(--text-primary);
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 40px 0 rgba(0, 242, 254, 0.08);
+}
+
+/* Glowing text */
+.glow-text {
+  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(0, 242, 254, 0.2);
+}
+
+.glow-purple {
+  background: linear-gradient(135deg, #a78bfa 0%, var(--accent-purple) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom buttons */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+  color: #000;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 242, 254, 0.35);
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Progress circular animation for lockout */
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.35s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+/* Layout container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Grid systems */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+/* Tabs styles */
+.tab-button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.tab-button.active {
+  color: var(--accent-cyan);
+  border-bottom-color: var(--accent-cyan);
+}
+
+/* Inputs and forms */
+.custom-input {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--card-border);
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  width: 100%;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.custom-input:focus {
+  border-color: var(--accent-cyan);
+}
+
+/* Lockout banner */
+.lockout-banner {
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.15) 0%, rgba(245, 158, 11, 0.05) 100%);
+  border-left: 4px solid var(--danger);
+  padding: 1rem;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Animations */
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.9; }
+}
+
+.pulse-glow {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
