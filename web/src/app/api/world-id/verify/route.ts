@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     
     // Support either forwarding the raw response object, or extracting fields
     const idkitResponse = body.idkitResponse || body;
-    const rpId = body.rp_id || process.env.WORLD_ID_APP_ID || 'app_57d38506bb2953dc8219d826cd3dedd6';
+    const rpId = body.rp_id || process.env.WORLD_ID_RP_ID || process.env.WORLD_ID_APP_ID || 'app_57d38506bb2953dc8219d826cd3dedd6';
 
     const isProduction = process.env.WORLD_ID_ENVIRONMENT === 'production';
     const verifyUrl = isProduction

@@ -5,6 +5,7 @@ export async function GET() {
   try {
     const signingKey = process.env.WORLD_SIGNING_KEY;
     const appId = process.env.WORLD_ID_APP_ID || 'app_57d38506bb2953dc8219d826cd3dedd6';
+    const rpId = process.env.WORLD_ID_RP_ID || appId;
     const action = process.env.WORLD_ID_ACTION || 'user-login';
 
     if (!signingKey || signingKey.includes('xxxxxx')) {
@@ -24,7 +25,7 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       rp_context: {
-        rp_id: appId,
+        rp_id: rpId,
         nonce,
         created_at: createdAt,
         expires_at: expiresAt,
