@@ -8,9 +8,12 @@ export async function POST(request: Request) {
     const idkitResponse = body.idkitResponse || body;
     const rpId = body.rp_id || process.env.WORLD_ID_APP_ID || 'app_57d38506bb2953dc8219d826cd3dedd6';
 
-    const verifyUrl = `https://developer.world.org/api/v4/verify/${rpId}`;
+    const isProduction = process.env.WORLD_ID_ENVIRONMENT === 'production';
+    const verifyUrl = isProduction
+      ? `https://developer.world.org/api/v4/verify/${rpId}`
+      : `https://staging-developer.worldcoin.org/api/v4/verify/${rpId}`;
 
-    console.log(`World ID Verification: Verifying ZK proof against v4 API for RP ID: ${rpId}`);
+    console.log(`World ID Verification: Verifying ZK proof against v4 API (${isProduction ? 'Production' : 'Staging'}) for RP ID: ${rpId}`);
 
     const response = await fetch(verifyUrl, {
       method: 'POST',
