@@ -3,37 +3,25 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { merkle_root, nullifier_hash, proof, credential_type, action, signal } = body;
+    
+    // Support either forwarding the raw response object, or extracting fields
+    const idkitResponse = body.idkitResponse || body;
+    const rpId = body.rp_id || process.env.WORLD_ID_APP_ID || 'app_57d38506bb2953dc8219d826cd3dedd6';
 
-    if (!merkle_root || !nullifier_hash || !proof || !credential_type) {
-      return NextResponse.json(
-        { error: 'Missing required proof parameters.' },
-        { status: 400 }
-      );
-    }
+    const verifyUrl = `https://developer.world.org/api/v4/verify/${rpId}`;
 
-    const appId = process.env.WORLD_ID_APP_ID || 'app_staging_satoshis_parabox';
-    const verifyUrl = `https://developer.worldcoin.org/api/v2/verify/${appId}`;
-
-    console.log(`World ID Verification: Verifying nullifier ${nullifier_hash} against ${appId} (Action: ${action || 'user-login'})`);
+    console.log(`World ID Verification: Verifying ZK proof against v4 API for RP ID: ${rpId}`);
 
     const response = await fetch(verifyUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        merkle_root,
-        nullifier_hash,
-        proof,
-        verification_level: credential_type, // 'orb' or 'device'
-        action: action || process.env.WORLD_ID_ACTION || 'user-login',
-        signal: signal || ''
-      }),
+      body: JSON.stringify(idkitResponse),
     });
 
     const data = await response.json();
-    console.log('World ID Verification Response:', data);
+    console.log('World ID v4 Verification Response:', data);
 
     if (response.ok) {
       return NextResponse.json({
@@ -46,7 +34,7 @@ export async function POST(request: Request) {
         success: false,
         error: data.code || 'verification_failed',
         message: data.detail || 'Failed to verify Zero-Knowledge proof.'
-      }, { status: 400 });
+      }, { status: response.status || 400 });
     }
   } catch (error: any) {
     console.error('World ID verification API error:', error);

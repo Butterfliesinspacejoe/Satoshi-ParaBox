@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@hashgraph/sdk": "^2.81.0",
-    "@worldcoin/idkit": "^1.4.1",
+    "@worldcoin/idkit": "^4.1.8",
     "lucide-react": "^1.18.0",
     "next": "16.2.9",
     "react": "19.2.4",
