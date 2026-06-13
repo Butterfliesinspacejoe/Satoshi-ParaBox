@@ -198,6 +198,18 @@ export default function SatoshiParaBox() {
     logToConsole('Security: Session extended. TTL timer reset.');
   };
 
+  // HashScan Link Formatter
+  const getHashscanLink = (txId: string) => {
+    if (!txId) return '#';
+    if (txId.includes('fallback')) return '#';
+    // Format: operator@seconds.nanos
+    const parts = txId.split('@');
+    if (parts.length > 1) {
+      return `https://hashscan.io/testnet/transaction/${parts[1]}/message`;
+    }
+    return `https://hashscan.io/testnet/transaction/${txId}/message`;
+  };
+
   // Hedera Log creation
   const addHcsLog = async (
     type: HcsLog['type'], 
@@ -607,7 +619,19 @@ export default function SatoshiParaBox() {
                                 Blob: {file.blobId.substring(0, 16)}...
                               </span>
                               <span style={{ background: 'rgba(255, 255, 255, 0.04)', padding: '2px 6px', borderRadius: '4px', color: 'var(--text-secondary)', fontFamily: 'monospace' }}>
-                                HCS Tx: {file.hederaTxId.substring(0, 14)}...
+                                HCS Tx:{' '}
+                                {file.hederaTxId.includes('fallback') ? (
+                                  file.hederaTxId.substring(0, 14) + '...'
+                                ) : (
+                                  <a 
+                                    href={getHashscanLink(file.hederaTxId)} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}
+                                  >
+                                    {file.hederaTxId.substring(0, 14)}...
+                                  </a>
+                                )}
                               </span>
                               {file.status !== 'purged' && (
                                 <a 
@@ -688,8 +712,32 @@ export default function SatoshiParaBox() {
                         </p>
                         
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', fontSize: '0.75rem', color: 'var(--text-muted)', borderTop: '1px solid rgba(255, 255, 255, 0.03)', paddingTop: '0.5rem' }}>
-                          <span>Topic: {log.topicId}</span>
-                          <span>Tx ID: {log.transactionId}</span>
+                          <span>
+                            Topic:{' '}
+                            <a 
+                              href={`https://hashscan.io/testnet/topic/${log.topicId}`} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              style={{ color: 'var(--accent-cyan)', textDecoration: 'none' }}
+                            >
+                              {log.topicId}
+                            </a>
+                          </span>
+                          <span>
+                            Tx ID:{' '}
+                            {log.transactionId.includes('fallback') ? (
+                              log.transactionId
+                            ) : (
+                              <a 
+                                href={getHashscanLink(log.transactionId)} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                style={{ color: 'var(--accent-cyan)', textDecoration: 'none', fontWeight: '600' }}
+                              >
+                                {log.transactionId}
+                              </a>
+                            )}
+                          </span>
                           <span>Subdomain: {log.subdomain}</span>
                         </div>
                       </div>
