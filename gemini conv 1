@@ -1,0 +1,30 @@
+Gemini Conversation
+
+Can you clean up these notes for me?
+Here is a cleaned-up, organized transcription of your handwritten project notes from image.png. I have structured the technical stack, the core project concept, and the operational services to make them easily readable.
+Technical Stack & Architecture
+ENS (Ethereum Name Service)
+Individualized medical/privacy data site (SVI).
+Concept: An ENS subdomain "privacy" storage site integrated with messaging and storage.
+Walrus
+Storage of health data.
+Handles the decentralized storage layer for the ENS site.
+World (World ID)
+Verification for individualized accounts to access sensitive data.
+Hedera
+HIPAA-gov level security messaging.
+Constraint Note: "No Solidity Allowed!"
+Data & Message Protocol
+Data and messages features: "Auto Delete" or "Auto Lockout" w/o (without) user interaction.
+Data Indexing & Analytics (Under Evaluation)
+The Graph: Potential for data indexing options and analytics.
+Key questions to solve: How to handle data that exists vs. data that has been deleted? Integration with a World ID Registry?
+Project Concept & Philosophy
+"It matters not if Satoshi existed, but instead that which the potential of the existence or destruction of his data represents."
+Project Name: "Satoshi's ParaBox"
+Services Offered
+Orb & ID Verification: Utilizing the World Orb to verify user identities securely.
+Technical Assistance ("The Fixer"): Providing a physical representative to assist users who are not tech-savvy or who need to delegate the setup and management of these privacy services.
+Data Upload & Environmental Offset:
+A secure data upload service followed by paper shredding and paper recycling.
+Designed to subsidize income and offset the project's environmental/energy usage footprint.
